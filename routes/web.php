@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/users', 'UserController@index')->name('users');
 Route::get('/items', 'ItemsController@index')->name('items');
+Route::get('/locations', 'LocationsController@index')->name('locations');
