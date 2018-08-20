@@ -54,8 +54,8 @@
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li>
-                  <li><a class="dropdown-item" href="#">Groups</a></li>
-                  <li><a class="dropdown-item" href="#">Item Masterlist</a></li>
+                  <li><a class="dropdown-item" href="">Groups</a></li>
+                  <li><a class="dropdown-item" href="{{ url('/items') }}">Item Masterlist</a></li>
                   <li><a class="dropdown-item" href="#">Product Inventory</a></li>
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
