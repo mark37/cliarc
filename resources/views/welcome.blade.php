@@ -10,6 +10,12 @@
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
+        <script language="javacript">
+            $(".dropdown-menu li a").click(function(){
+                $(this).parents(".btn-group").find('.selection').text($(this).text());
+                $(this).parents(".btn-group").find('.selection').val($(this).text());
+            });
+        </script>
         <!-- Styles -->
         <style>
             html, body {

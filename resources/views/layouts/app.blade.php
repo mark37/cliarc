@@ -22,7 +22,7 @@
 </head>
 <body>
   <div id="app">
-    <img id="logo-main" class="mx-auto d-block" src="/images/cliarc-banner.jpg" width="900px" height="200px" alt="Logo Thing main logo">
+    <img id="logo-main" class="mx-auto d-block" src="/images/cliarc-banner.jpg" width="1140px" height="200px" alt="Logo Thing main logo">
     <nav class="navbar navbar-expand-md bg-dark navbar-dark navbar-laravel">
       <div class="container">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -36,7 +36,16 @@
               <a class="nav-link" href="{{ url('/home') }}">{{ __('Home') }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/items') }}">{{ __('Products') }}</a>
+              <a class="nav-link" href="{{ url('/product_list') }}">{{ __('Products') }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url('/') }}">{{ __('Schedules') }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url('/') }}">{{ __('Organizations') }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url('/') }}">{{ __('About Us') }}</a>
             </li>
           </ul>
 
@@ -57,8 +66,8 @@
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/items') }}">Item Masterlist</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/items-product') }}">Item Inventory</a></li>
+                  <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
+                  <li><a class="dropdown-item" href="{{ url('/product_item') }}">Item Inventory</a></li>
                   <li><a class="dropdown-item" href="{{ url('/locations') }}">Groups</a></li>
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
