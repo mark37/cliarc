@@ -44,7 +44,12 @@ class ItemsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        User::create([
+            'product_name' => $data['product_name'],
+            'product_desc' => $data['product_desc'],
+            'product_unit' => $data['product_unit'],
+            'product_type' => $data['product_type'],
+        ]);
     }
 
     /**
