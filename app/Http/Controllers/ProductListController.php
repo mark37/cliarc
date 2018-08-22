@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\ProductList;
 use App\LibItemType;
+use App\LibStatus;
 
 class ProductListController extends Controller
 {
@@ -26,9 +27,12 @@ class ProductListController extends Controller
      */
     public function index()
     {
-      $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')->get();
+      $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')
+                  ->join('lib_status','lib_status.status_id','=','product_list.product_status')
+                  ->get();
       $item_types = LibItemType::all();
-      return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types]);
+      $item_status = LibStatus::all();
+      return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types, 'item_statuses' => $item_status]);
     }
 
     /**
@@ -49,30 +53,17 @@ class ProductListController extends Controller
      */
     public function store(Request $request)
     {
-      // return $request->input('product_id');
-      if($request->input('product_id')){
-        $product_list = ProductList::findOrFail($request->input('product_id'));
-          $product_list->product_name = $request->input('product_name');
-          $product_list->product_desc = $request->input('product_desc');
-          $product_list->product_unit = $request->input('product_unit');
-          $product_list->product_type = $request->input('product_type');
-        $product_list->update();
-
-        // return back();
-      }else{
-        ProductList::create([
-          'product_name' => $request->input('product_name'),
-          'product_desc' => $request->input('product_desc'),
-          'product_unit' => $request->input('product_unit'),
-          'product_type' => $request->input('product_type')
-        ]);
-      }
+      // return "TEST 2";
       
+      ProductList::create([
+        'product_name' => $request->input('product_name'),
+        'product_desc' => $request->input('product_desc'),
+        'product_unit' => $request->input('product_unit'),
+        'product_status' => $request->input('product_status'),
+        'product_type' => $request->input('product_type')
+      ]);
 
       return back();
-    //   $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')->get();
-    //   $item_types = LibItemType::all();
-    //   return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types]);
     }
 
     /**
@@ -83,6 +74,7 @@ class ProductListController extends Controller
      */
     public function show($id)
     {
+      // return "SHOW";
         // return ProductList::find($id);
     }
 
@@ -94,7 +86,7 @@ class ProductListController extends Controller
      */
     public function edit($id)
     {
-        //
+      // return "EDIT";
     }
 
     /**
@@ -106,7 +98,16 @@ class ProductListController extends Controller
      */
     public function update(Request $request, $id)
     {
-      
+      // return $request->input('product_id');
+      $product_list = ProductList::findOrFail($request->input('product_id'));
+        $product_list->product_name = $request->input('product_name');
+        $product_list->product_desc = $request->input('product_desc');
+        $product_list->product_unit = $request->input('product_unit');
+        $product_list->product_type = $request->input('product_type');
+        $product_list->product_status = $request->input('product_status');
+      $product_list->update();
+
+      return back();
     }
 
     /**
@@ -115,8 +116,10 @@ class ProductListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        //
+      $product_list = ProductList::findOrFail($request->input('product_id'));
+      $product_list->delete();
+      return back();
     }
 }

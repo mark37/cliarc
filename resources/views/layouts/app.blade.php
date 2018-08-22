@@ -65,10 +65,10 @@
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->name }} 
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li>
+                  <!-- <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li> -->
                   <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/product_item') }}">Item Inventory</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/locations') }}">Groups</a></li>
+                  <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
+                  <!-- <li><a class="dropdown-item" href="{{ url('/locations') }}">Groups</a></li> -->
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -98,6 +98,7 @@
         var productname = button.data('productname') 
         var productdesc = button.data('productdesc') 
         var productunit = button.data('productunit') 
+        var productstatus = button.data('productstatus') 
         var producttype = button.data('producttype') 
         var modal = $(this)
         
@@ -105,7 +106,35 @@
         modal.find('.modal-body #product_name').val(productname);
         modal.find('.modal-body #product_desc').val(productdesc);
         modal.find('.modal-body #product_unit').val(productunit);
+        modal.find('.modal-body #product_status').val(productunit);
         modal.find('.modal-body #productype').val(producttype);
+    });
+
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var productid = button.data('productid')
+        var productname = button.data('productname') 
+        var modal = $(this)
+        
+        modal.find('.modal-body #product_id').val(productid);
+        modal.find('.modal-body #product_name').val(productname);
+
+    });
+
+    $('#processRequestModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var requestid = button.data('requestid')
+        var productname = button.data('productname') 
+        var requestdate= button.data('requestdate')
+        var requestnotes= button.data('requestnotes')
+        var requestedby= button.data('requestedby')
+        var modal = $(this)
+        
+        modal.find('.modal-body #request_id').val(requestid);
+        modal.find('.modal-body #product_name').val(productname);
+        modal.find('.modal-body #request_date').val(requestdate);
+        modal.find('.modal-body #request_notes').val(requestnotes);
+        modal.find('.modal-body #requested_by').val(requestedby);
     });
   </script>
 </body>

@@ -11,6 +11,7 @@ class ProductItemOut extends Model
   protected $fillable = [
     'product_item_id',
     'request_date',
+    'request_notes',
     'request_status_id',
     'user_id',
     'approved_by',
