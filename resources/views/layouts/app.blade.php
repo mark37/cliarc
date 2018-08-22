@@ -11,8 +11,8 @@
   <title>{{ config('app.name', 'CLIARC') }}</title>
 
   <!-- Scripts -->
-  <script src="{{ asset('js/app.js') }}" defer></script>
-
+  <script src="{{ asset('js/app.js') }}"></script>
+  
   <!-- Fonts -->
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
@@ -87,5 +87,26 @@
       @yield('content')
     </main>
   </div>
+
+  <!-- <script src="{{asset('js/app.js')}}"></script> -->
+
+  <script>
+    
+    $('#editModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var productid = button.data('productid') 
+        var productname = button.data('productname') 
+        var productdesc = button.data('productdesc') 
+        var productunit = button.data('productunit') 
+        var producttype = button.data('producttype') 
+        var modal = $(this)
+        
+        modal.find('.modal-body #product_id').val(productid);
+        modal.find('.modal-body #product_name').val(productname);
+        modal.find('.modal-body #product_desc').val(productdesc);
+        modal.find('.modal-body #product_unit').val(productunit);
+        modal.find('.modal-body #productype').val(producttype);
+    });
+  </script>
 </body>
 </html>

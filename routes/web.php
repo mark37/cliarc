@@ -22,7 +22,9 @@ Route::get('/users', 'UserController@index')->name('users');
 Route::get('/locations', 'LocationsController@index')->name('locations');
 
 Route::get('/product_list', 'ProductListController@index')->name('product_list');
+Route::get('/product_list/{id}', 'ProductListController@show');
 Route::post('/product_list', 'ProductListController@store');
+Route::post('/product_list/{id}', 'ProductListController@update');
 
 Route::get('/product_item', 'ProductItemController@index')->name('product_item');
 Route::post('/product_item', 'ProductItemController@store');

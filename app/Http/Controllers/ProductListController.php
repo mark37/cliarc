@@ -26,7 +26,7 @@ class ProductListController extends Controller
      */
     public function index()
     {
-      $products = ProductList::all();
+      $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')->get();
       $item_types = LibItemType::all();
       return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types]);
     }
@@ -49,16 +49,30 @@ class ProductListController extends Controller
      */
     public function store(Request $request)
     {
-      ProductList::create([
-        'product_name' => $request->input('product_name'),
-        'product_desc' => $request->input('product_desc'),
-        'product_unit' => $request->input('product_unit'),
-        'product_type' => $request->input('product_type')
-      ]);
+      // return $request->input('product_id');
+      if($request->input('product_id')){
+        $product_list = ProductList::findOrFail($request->input('product_id'));
+          $product_list->product_name = $request->input('product_name');
+          $product_list->product_desc = $request->input('product_desc');
+          $product_list->product_unit = $request->input('product_unit');
+          $product_list->product_type = $request->input('product_type');
+        $product_list->update();
 
-      $products = ProductList::all();
-      $item_types = LibItemType::all();
-      return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types]);
+        // return back();
+      }else{
+        ProductList::create([
+          'product_name' => $request->input('product_name'),
+          'product_desc' => $request->input('product_desc'),
+          'product_unit' => $request->input('product_unit'),
+          'product_type' => $request->input('product_type')
+        ]);
+      }
+      
+
+      return back();
+    //   $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')->get();
+    //   $item_types = LibItemType::all();
+    //   return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types]);
     }
 
     /**
@@ -69,7 +83,7 @@ class ProductListController extends Controller
      */
     public function show($id)
     {
-      
+        // return ProductList::find($id);
     }
 
     /**
@@ -92,7 +106,7 @@ class ProductListController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      
     }
 
     /**
