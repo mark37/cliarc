@@ -68,6 +68,8 @@
                   <!-- <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li> -->
                   <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
                   <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
+                  <li><a href="/messages">Messages @include('messenger.unread-count')</a></li>
+                  <li><a href="/messages/create">Create New Message</a></li>
                   <!-- <li><a class="dropdown-item" href="{{ url('/locations') }}">Groups</a></li> -->
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
