@@ -15,6 +15,6 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('chat', function ($user) {
+Broadcast::channel('cliarc-development', function ($user) {
     return Auth::check();
 });

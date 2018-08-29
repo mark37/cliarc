@@ -11,7 +11,6 @@
   <title>{{ config('app.name', 'CLIARC') }}</title>
 
   <!-- Scripts -->
-  <script src="{{ asset('js/app.js') }}"></script>
   
   <!-- Fonts -->
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -61,7 +60,6 @@
 </head>
 <body>
   <div id="app">
-    x<example></example>
     <img id="logo-main" class="mx-auto d-block" src="/images/cliarc-banner.jpg" width="1140px" height="200px" alt="Logo Thing main logo">
     <nav class="navbar navbar-expand-md bg-dark navbar-dark navbar-laravel">
       <div class="container">
@@ -130,6 +128,7 @@
 
   <!-- <script src="{{asset('js/app.js')}}"></script> -->
 
+  <script src="{{ asset('js/app.js') }}"></script>
   <script>
     window.Laravel = <?php echo json_encode([
       'csrfToken' => csrf_token(),
