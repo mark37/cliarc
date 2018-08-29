@@ -35,3 +35,7 @@ Route::delete('/product_item_out/{id}', 'ProductItemOutController@destroy');
 
 Route::get('/product_item', 'ProductItemController@index')->name('product_item');
 Route::post('/product_item', 'ProductItemController@store');
+
+Route::get('/chat', 'ChatsController@index');
+Route::get('messages', 'ChatsController@fetchMessages');
+Route::post('messages', 'ChatsController@sendMessage');

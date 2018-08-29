@@ -19,9 +19,49 @@
   <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"> -->
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+  <style>
+    .chat {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat li {
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 1px dotted #B3A9A9;
+    }
+
+    .chat li .chat-body p {
+      margin: 0;
+      color: #777777;
+    }
+
+    .panel-body {
+      overflow-y: scroll;
+      height: 350px;
+    }
+
+    ::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar {
+      width: 12px;
+      background-color: #F5F5F5;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+      background-color: #555;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
+    x<example></example>
     <img id="logo-main" class="mx-auto d-block" src="/images/cliarc-banner.jpg" width="1140px" height="200px" alt="Logo Thing main logo">
     <nav class="navbar navbar-expand-md bg-dark navbar-dark navbar-laravel">
       <div class="container">
@@ -91,7 +131,10 @@
   <!-- <script src="{{asset('js/app.js')}}"></script> -->
 
   <script>
-    
+    window.Laravel = <?php echo json_encode([
+      'csrfToken' => csrf_token(),
+    ]); ?>
+
     $('#editModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
         var productid = button.data('productid') 
