@@ -51,13 +51,5 @@ const app = new Vue({
               console.log(response.data);
             });
         },
-
-        addFile(message) {
-            this.messages.push(message);
-
-            axios.post('/messages/upload_file', message).then(response => {
-              console.log(response.data);
-            });
-        }
     }
 });

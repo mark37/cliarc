@@ -30436,13 +30436,6 @@ var app = new Vue({
             axios.post('/messages', message).then(function (response) {
                 console.log(response.data);
             });
-        },
-        addFile: function addFile(message) {
-            this.messages.push(message);
-
-            axios.post('/messages/upload_file', message).then(function (response) {
-                console.log(response.data);
-            });
         }
     }
 });
@@ -30508,7 +30501,7 @@ window.Pusher = __webpack_require__(162);
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
     broadcaster: 'pusher',
     key: "59087228df5316fb414d",
-    cluster: "mt1",
+    cluster: "ap1",
     encrypted: true
 });
 
@@ -74116,19 +74109,44 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$emit('messagesent', {
         user: this.user,
         message: this.newMessage,
+        r_user_id: 1,
         created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
       });
 
       this.newMessage = '';
     },
     uploadFile: function uploadFile() {
-      this.$emit('uploadfile', {
-        user: this.user,
-        message: this.newMessage,
-        created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
-      });
+      var _this = this;
 
-      this.newMessage = '';
+      var _loop = function _loop(i) {
+        if (_this.files[i].id) {
+          return 'continue';
+        }
+        var formData = new FormData();
+        formData.append('file', _this.files[i]);
+        formData.append('r_user_id', 1);
+        formData.append('user_id', _this.user.id);
+
+        axios.post('/messages/upload_file', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(function (data) {
+          this.files[i].id = data['data']['id'];
+          this.files.splice(i, 1, this.files[i]);
+
+          this.messages.push(message);
+          console.log('success');
+        }.bind(_this)).catch(function (data) {
+          console.log('error');
+        });
+      };
+
+      for (var i = 0; i < this.files.length; i++) {
+        var _ret = _loop(i);
+
+        if (_ret === 'continue') continue;
+      }
     },
     handleFiles: function handleFiles() {
       var uploadedFiles = this.$refs.files.files;
@@ -74516,28 +74534,7 @@ var render = function() {
               ])
             : _vm._e()
         ])
-      }),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.files.length > 0,
-              expression: "files.length > 0"
-            }
-          ],
-          staticClass: "submit-button",
-          on: {
-            click: function($event) {
-              _vm.submitFiles()
-            }
-          }
-        },
-        [_vm._v("Submit")]
-      )
+      })
     ],
     2
   )

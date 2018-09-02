@@ -6,6 +6,9 @@ use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
+use Illuminate\Support\Facades\Input;
+use Storage;
+use File;
 
 class ChatsController extends Controller
 {
@@ -45,7 +48,8 @@ class ChatsController extends Controller
         $user = Auth::user();
 
         $message = $user->messages()->create([
-            'message' => $request->input('message')
+            'message' => $request->input('message'),
+            'r_user_id' => $request->input('r_user_id')
         ]);
 
         broadcast(new MessageSent($user, $message))->toOthers();
@@ -56,11 +60,14 @@ class ChatsController extends Controller
     public function uploadFile(Request $request) {
         $file = Input::file('file');
         $filename = $file->getClientOriginalName();
-
+        $r_user_id = Input::get('r_user_id');
+        $user_id = Input::get('user_id');
         $path = hash( 'sha256', time());
 
         if(Storage::disk('uploads')->put($path.'/'.$filename,  File::get($file))) {
             $input['filename'] = $filename;
+            $input['r_user_id'] = $r_user_id;
+            $input['user_id'] = $user_id;
             $input['mime'] = $file->getClientMimeType();
             $input['path'] = $path;
             $input['size'] = $file->getClientSize();
@@ -71,6 +78,9 @@ class ChatsController extends Controller
                 'id' => $file->id
             ], 200);
         }
+
+        broadcast(new MessageSent($user, 'test'))->toOthers();
+
         return response()->json([
             'success' => false
         ], 500);

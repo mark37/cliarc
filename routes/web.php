@@ -39,3 +39,4 @@ Route::post('/product_item', 'ProductItemController@store');
 Route::get('/chat', 'ChatsController@index');
 Route::get('messages', 'ChatsController@fetchMessages');
 Route::post('messages', 'ChatsController@sendMessage');
+Route::post('messages/upload_file', 'ChatsController@uploadFile');

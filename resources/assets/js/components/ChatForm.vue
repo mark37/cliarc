@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <a class="submit-button" v-on:click="submitFiles()" v-show="files.length > 0">Submit</a>
+          <!-- <a class="submit-button" v-on:click="submitFiles()" v-show="files.length > 0">Submit</a> -->
         <!-- </div> -->
       <!-- </div> -->
     </div>
@@ -54,6 +54,7 @@
         this.$emit('messagesent', {
           user: this.user,
           message: this.newMessage,
+          r_user_id: 1,
           created_at: moment().format('YYYY-MM-DD hh:mm:ss')
         });
 
@@ -61,13 +62,32 @@
       },
 
       uploadFile() {
-        this.$emit('uploadfile', {
-          user: this.user,
-          message: this.newMessage,
-          created_at: moment().format('YYYY-MM-DD hh:mm:ss')
-        });
+        for( let i = 0; i < this.files.length; i++ ){
+          if(this.files[i].id) {
+              continue;
+          }
+          let formData = new FormData();
+          formData.append('file', this.files[i]);
+          formData.append('r_user_id', 1);
+          formData.append('user_id', this.user.id);
 
-        this.newMessage = ''
+          axios.post('/messages/upload_file',
+              formData,
+              {
+                  headers: {
+                      'Content-Type': 'multipart/form-data'
+                  }
+              }
+          ).then(function(data) {
+              this.files[i].id = data['data']['id'];
+              this.files.splice(i, 1, this.files[i]);
+
+              this.messages.push(message);
+              console.log('success');
+          }.bind(this)).catch(function(data) {
+              console.log('error');
+          });
+        }
       },
 
       handleFiles() {
