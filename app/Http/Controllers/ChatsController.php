@@ -9,6 +9,7 @@ use App\Events\MessageSent;
 use Illuminate\Support\Facades\Input;
 use Storage;
 use File;
+use Response;
 
 class ChatsController extends Controller
 {
@@ -57,6 +58,14 @@ class ChatsController extends Controller
         return ['status' => 'Message Sent!'];
     }
 
+    public function downloadFile(Request $request){
+        $path = storage_path().'/files/uploads/'.$request->input('path').'/'.$request->input('filename');
+        if(file_exists($path)) {
+            return Response::download($path);
+        }
+    }
+
+    
     public function uploadFile(Request $request) {
         $file = Input::file('file');
         $filename = $file->getClientOriginalName();

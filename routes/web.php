@@ -40,3 +40,11 @@ Route::get('/chat', 'ChatsController@index');
 Route::get('messages', 'ChatsController@fetchMessages');
 Route::post('messages', 'ChatsController@sendMessage');
 Route::post('messages/upload_file', 'ChatsController@uploadFile');
+Route::get('download_file', 'ChatsController@downloadFile')->name('download_file');
+
+Route::get('files/{path_file}/{file}', function($path_file = null, $file = null) {
+    $path = storage_path().'/files/uploads/'.$path_file.'/'.$file;
+    if(file_exists($path)) {
+        return Response::download($path);
+    }
+});

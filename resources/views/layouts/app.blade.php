@@ -282,7 +282,7 @@ img{ max-width:100%;}
   </div>
 
   <!-- <script src="{{asset('js/app.js')}}"></script> -->
-
+  @routes
   <script src="{{ asset('js/app.js') }}"></script>
   <script>
     window.Laravel = <?php echo json_encode([

@@ -17,6 +17,11 @@ window.Vue = require('vue');
 
 Vue.component('chat-messages', require('./components/ChatMessages.vue'));
 Vue.component('chat-form', require('./components/ChatForm.vue'));
+Vue.mixin({
+  methods: {
+      route: route
+  }
+});
 
 const app = new Vue({
     el: '#app',
@@ -50,6 +55,34 @@ const app = new Vue({
             axios.post('/messages', message).then(response => {
               console.log(response.data);
             });
+        },
+
+        uploadFile(data) {
+          for( let i = 0; i < data.files.length; i++ ){
+            console.log(data.files);
+            if(data.files[i].id) {
+                continue;
+            }
+            let formData = new FormData();
+            formData.append('file', data.files[i]);
+            formData.append('r_user_id', 1);
+            formData.append('user_id', data.user.id);
+  
+            axios.post('/messages/upload_file',
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+            ).then(function(res) {
+              data.files[i].id = res['data']['id'];
+              data.files.splice(i, 1, data.files[i]);
+  
+              this.messages.push('test');
+              console.log('success');
+            });
+          }
         },
     }
 });

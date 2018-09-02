@@ -12,7 +12,7 @@
     <div class="input_msg_write">
       <input id="btn-input" type="text" class="write_msg" placeholder="Type a message" v-model="newMessage" @keyup.enter="sendMessage"/>
       
-      <button class="msg_attach_btn" id="btn-attach" @click="uploadFile" v-show="files.length > 0"><i class="fa fa-upload" aria-hidden="true"></i></button>
+      <button class="msg_attach_btn" id="btn-attach" @click="uploadFiles" v-show="files.length > 0"><i class="fa fa-upload" aria-hidden="true"></i></button>
       <button class="msg_send_btn" id="btn-chat" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
 
       <!-- <div class="card"> -->
@@ -61,33 +61,13 @@
         this.newMessage = ''
       },
 
-      uploadFile() {
-        for( let i = 0; i < this.files.length; i++ ){
-          if(this.files[i].id) {
-              continue;
-          }
-          let formData = new FormData();
-          formData.append('file', this.files[i]);
-          formData.append('r_user_id', 1);
-          formData.append('user_id', this.user.id);
-
-          axios.post('/messages/upload_file',
-              formData,
-              {
-                  headers: {
-                      'Content-Type': 'multipart/form-data'
-                  }
-              }
-          ).then(function(data) {
-              this.files[i].id = data['data']['id'];
-              this.files.splice(i, 1, this.files[i]);
-
-              this.messages.push(message);
-              console.log('success');
-          }.bind(this)).catch(function(data) {
-              console.log('error');
-          });
-        }
+      uploadFiles() {
+        this.$emit('addfile', {
+          user: this.user,
+          files: this.files,
+          r_user_id: 1,
+          created_at: moment().format('YYYY-MM-DD hh:mm:ss')
+        });
       },
 
       handleFiles() {
