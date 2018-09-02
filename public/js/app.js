@@ -30400,6 +30400,11 @@ window.Vue = __webpack_require__(163);
 
 Vue.component('chat-messages', __webpack_require__(166));
 Vue.component('chat-form', __webpack_require__(169));
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
 
 var app = new Vue({
     el: '#app',
@@ -30436,6 +30441,36 @@ var app = new Vue({
             axios.post('/messages', message).then(function (response) {
                 console.log(response.data);
             });
+        },
+        uploadFile: function uploadFile(data) {
+            var _loop = function _loop(i) {
+                console.log(data.files);
+                if (data.files[i].id) {
+                    return 'continue';
+                }
+                var formData = new FormData();
+                formData.append('file', data.files[i]);
+                formData.append('r_user_id', 1);
+                formData.append('user_id', data.user.id);
+
+                axios.post('/messages/upload_file', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function (res) {
+                    data.files[i].id = res['data']['id'];
+                    data.files.splice(i, 1, data.files[i]);
+
+                    this.messages.push('test');
+                    console.log('success');
+                });
+            };
+
+            for (var i = 0; i < data.files.length; i++) {
+                var _ret = _loop(i);
+
+                if (_ret === 'continue') continue;
+            }
         }
     }
 });
@@ -73557,9 +73592,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['messages', 'user_id']
+  props: ['messages', 'user_id'],
+
+  methods: {
+    downloadUrl: function downloadUrl(message) {
+      axios.get('download_file', message).then(function (response) {
+        console.log(response.data);
+        return response.data;
+      });
+      // return  window.route('/messages/download_file', message);
+    }
+  }
 });
 
 /***/ }),
@@ -73579,7 +73626,17 @@ var render = function() {
           ? _c("div", { staticClass: "incoming_msg" }, [
               _c("div", { staticClass: "received_msg" }, [
                 _c("div", { staticClass: "received_withd_msg" }, [
-                  _c("p", [_vm._v(_vm._s(message.message))]),
+                  message.message != null
+                    ? _c("p", [_vm._v(_vm._s(message.message))])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("p", [
+                    message.filename != null
+                      ? _c("a", { attrs: { href: _vm.downloadUrl(message) } }, [
+                          _vm._v(_vm._s(message.filename))
+                        ])
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c("span", { staticClass: "time_date" }, [
                     _vm._v(" " + _vm._s(message.created_at) + " ")
@@ -73589,7 +73646,26 @@ var render = function() {
             ])
           : _c("div", { staticClass: "outgoing_msg" }, [
               _c("div", { staticClass: "sent_msg" }, [
-                _c("p", [_vm._v(_vm._s(message.message))]),
+                message.message != null
+                  ? _c("p", [_vm._v(_vm._s(message.message))])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("p", [
+                  message.filename != null
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: _vm.route("download_file", {
+                              path: message.path,
+                              filename: message.filename
+                            })
+                          }
+                        },
+                        [_vm._v(_vm._s(message.filename))]
+                      )
+                    : _vm._e()
+                ]),
                 _vm._v(" "),
                 _c("span", { staticClass: "time_date" }, [
                   _vm._v(" " + _vm._s(message.created_at) + " ")
@@ -74115,38 +74191,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       this.newMessage = '';
     },
-    uploadFile: function uploadFile() {
-      var _this = this;
-
-      var _loop = function _loop(i) {
-        if (_this.files[i].id) {
-          return 'continue';
-        }
-        var formData = new FormData();
-        formData.append('file', _this.files[i]);
-        formData.append('r_user_id', 1);
-        formData.append('user_id', _this.user.id);
-
-        axios.post('/messages/upload_file', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }).then(function (data) {
-          this.files[i].id = data['data']['id'];
-          this.files.splice(i, 1, this.files[i]);
-
-          this.messages.push(message);
-          console.log('success');
-        }.bind(_this)).catch(function (data) {
-          console.log('error');
-        });
-      };
-
-      for (var i = 0; i < this.files.length; i++) {
-        var _ret = _loop(i);
-
-        if (_ret === 'continue') continue;
-      }
+    uploadFiles: function uploadFiles() {
+      this.$emit('addfile', {
+        user: this.user,
+        files: this.files,
+        r_user_id: 1,
+        created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
+      });
     },
     handleFiles: function handleFiles() {
       var uploadedFiles = this.$refs.files.files;
@@ -74482,7 +74533,7 @@ var render = function() {
           ],
           staticClass: "msg_attach_btn",
           attrs: { id: "btn-attach" },
-          on: { click: _vm.uploadFile }
+          on: { click: _vm.uploadFiles }
         },
         [
           _c("i", {
