@@ -17,6 +17,12 @@ window.Vue = require('vue');
 
 Vue.component('chat-messages', require('./components/ChatMessages.vue'));
 Vue.component('chat-form', require('./components/ChatForm.vue'));
+Vue.mixin({
+  methods: {
+      route: route
+  }
+});
+import moment from 'moment'
 
 const app = new Vue({
     el: '#app',
@@ -52,12 +58,38 @@ const app = new Vue({
             });
         },
 
-        addFile(message) {
-            this.messages.push(message);
+        uploadFile(data) {
+          for( let i = 0; i < data.files.length; i++ ){
+            if(data.files[i].id) {
+                continue;
+            }
+            let formData = new FormData();
+            formData.append('file', data.files[i]);
+            formData.append('r_user_id', 1);
+            formData.append('user_id', data.user.id);
 
-            axios.post('/messages/upload_file', message).then(response => {
-              console.log(response.data);
+            axios.post('/messages/upload_file',
+                formData,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                }
+            ).then(function(res) {
+              data.files[i].id = res['data']['id'];
+              data.files.splice(i, 1, data.files[i]);
+              this.messages.push({
+                message: null,
+                user: {'id': data.user.id},
+                path: res['data']['path'],
+                filename: res['data']['filename'],
+                created_at: moment().format('YYYY-MM-DD hh:mm:ss')
+              });
+              console.log('success');
+            }.bind(this)).catch(function(data) {
+              console.log(data);
             });
-        }
+          }
+        },
     }
 });

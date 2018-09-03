@@ -6,6 +6,10 @@ use App\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
+use Illuminate\Support\Facades\Input;
+use Storage;
+use File;
+use Response;
 
 class ChatsController extends Controller
 {
@@ -45,7 +49,8 @@ class ChatsController extends Controller
         $user = Auth::user();
 
         $message = $user->messages()->create([
-            'message' => $request->input('message')
+            'message' => $request->input('message'),
+            'r_user_id' => $request->input('r_user_id')
         ]);
 
         broadcast(new MessageSent($user, $message))->toOthers();
@@ -53,26 +58,45 @@ class ChatsController extends Controller
         return ['status' => 'Message Sent!'];
     }
 
+    public function downloadFile(Request $request){
+        $path = storage_path().'/files/uploads/'.$request->input('path').'/'.$request->input('filename');
+        if(file_exists($path)) {
+            return Response::download($path);
+        }
+    }
+
+    
     public function uploadFile(Request $request) {
+        $user = Auth::user();
         $file = Input::file('file');
         $filename = $file->getClientOriginalName();
-
+        $r_user_id = Input::get('r_user_id');
+        $user_id = Input::get('user_id');
         $path = hash( 'sha256', time());
 
         if(Storage::disk('uploads')->put($path.'/'.$filename,  File::get($file))) {
-            $input['filename'] = $filename;
-            $input['mime'] = $file->getClientMimeType();
-            $input['path'] = $path;
-            $input['size'] = $file->getClientSize();
-            $file = Message::create($input);
+            $message = $user->messages()->create([
+                'r_user_id' => $r_user_id,
+                'filename' => $filename,
+                'user_id' => $user_id,
+                'mime' => $file->getClientMimeType(),
+                'path' => $path,
+                'size' => $file->getClientSize()
+            ]);
 
             return response()->json([
                 'success' => true,
-                'id' => $file->id
+                'id' => $message->id,
+                'path' => $path,
+                'filename' => $filename,
+                'created_at' => $message->created_at
             ], 200);
+
+            broadcast(new MessageSent($user, $message))->toOthers();
+
+            return response()->json([
+                'success' => false
+            ], 500);
         }
-        return response()->json([
-            'success' => false
-        ], 500);
     }
 }

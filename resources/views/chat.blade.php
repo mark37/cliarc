@@ -77,7 +77,7 @@
         <div class="type_msg">
           <chat-form
               v-on:messagesent="addMessage"
-              v-on:uploadfile="addFile"
+              v-on:addfile="uploadFile"
               :user="{{ Auth::user() }}"
           ></chat-form>
         </div>

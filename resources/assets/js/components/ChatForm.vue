@@ -12,7 +12,7 @@
     <div class="input_msg_write">
       <input id="btn-input" type="text" class="write_msg" placeholder="Type a message" v-model="newMessage" @keyup.enter="sendMessage"/>
       
-      <button class="msg_attach_btn" id="btn-attach" @click="uploadFile" v-show="files.length > 0"><i class="fa fa-upload" aria-hidden="true"></i></button>
+      <button class="msg_attach_btn" id="btn-attach" @click="uploadFiles" v-show="files.length > 0"><i class="fa fa-upload" aria-hidden="true"></i></button>
       <button class="msg_send_btn" id="btn-chat" @click="sendMessage"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
 
       <!-- <div class="card"> -->
@@ -30,7 +30,7 @@
             </div>
           </div>
 
-          <a class="submit-button" v-on:click="submitFiles()" v-show="files.length > 0">Submit</a>
+          <!-- <a class="submit-button" v-on:click="submitFiles()" v-show="files.length > 0">Submit</a> -->
         <!-- </div> -->
       <!-- </div> -->
     </div>
@@ -54,20 +54,20 @@
         this.$emit('messagesent', {
           user: this.user,
           message: this.newMessage,
+          r_user_id: 1,
           created_at: moment().format('YYYY-MM-DD hh:mm:ss')
         });
 
         this.newMessage = ''
       },
 
-      uploadFile() {
-        this.$emit('uploadfile', {
+      uploadFiles() {
+        this.$emit('addfile', {
           user: this.user,
-          message: this.newMessage,
+          files: this.files,
+          r_user_id: 1,
           created_at: moment().format('YYYY-MM-DD hh:mm:ss')
         });
-
-        this.newMessage = ''
       },
 
       handleFiles() {

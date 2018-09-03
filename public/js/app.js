@@ -1902,7 +1902,7 @@
             try {
                 oldLocale = globalLocale._abbr;
                 var aliasedRequire = require;
-                __webpack_require__(176)("./" + name);
+                __webpack_require__(177)("./" + name);
                 getSetGlobalLocale(oldLocale);
             } catch (e) {}
         }
@@ -30374,13 +30374,17 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(138);
-module.exports = __webpack_require__(178);
+module.exports = __webpack_require__(179);
 
 
 /***/ }),
 /* 138 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -30399,7 +30403,13 @@ window.Vue = __webpack_require__(163);
  */
 
 Vue.component('chat-messages', __webpack_require__(166));
-Vue.component('chat-form', __webpack_require__(169));
+Vue.component('chat-form', __webpack_require__(170));
+Vue.mixin({
+    methods: {
+        route: route
+    }
+});
+
 
 var app = new Vue({
     el: '#app',
@@ -30437,12 +30447,43 @@ var app = new Vue({
                 console.log(response.data);
             });
         },
-        addFile: function addFile(message) {
-            this.messages.push(message);
+        uploadFile: function uploadFile(data) {
+            var _this3 = this;
 
-            axios.post('/messages/upload_file', message).then(function (response) {
-                console.log(response.data);
-            });
+            var _loop = function _loop(i) {
+                if (data.files[i].id) {
+                    return 'continue';
+                }
+                var formData = new FormData();
+                formData.append('file', data.files[i]);
+                formData.append('r_user_id', 1);
+                formData.append('user_id', data.user.id);
+
+                axios.post('/messages/upload_file', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(function (res) {
+                    data.files[i].id = res['data']['id'];
+                    data.files.splice(i, 1, data.files[i]);
+                    this.messages.push({
+                        message: null,
+                        user: { 'id': data.user.id },
+                        path: res['data']['path'],
+                        filename: res['data']['filename'],
+                        created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
+                    });
+                    console.log('success');
+                }.bind(_this3)).catch(function (data) {
+                    console.log(data);
+                });
+            };
+
+            for (var i = 0; i < data.files.length; i++) {
+                var _ret = _loop(i);
+
+                if (_ret === 'continue') continue;
+            }
         }
     }
 });
@@ -73485,7 +73526,7 @@ var normalizeComponent = __webpack_require__(13)
 /* script */
 var __vue_script__ = __webpack_require__(167)
 /* template */
-var __vue_template__ = __webpack_require__(168)
+var __vue_template__ = __webpack_require__(169)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73529,6 +73570,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_chat_scroll__ = __webpack_require__(168);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_chat_scroll___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_chat_scroll__);
+//
+//
 //
 //
 //
@@ -73565,12 +73610,86 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['messages', 'user_id']
+  props: ['messages', 'user_id'],
+
+  methods: {
+    downloadUrl: function downloadUrl(message) {
+      axios.get('download_file', message).then(function (response) {
+        return response.data;
+      });
+    }
+  }
 });
 
 /***/ }),
 /* 168 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function (global, factory) {
+	 true ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global['vue-chat-scroll'] = factory());
+}(this, (function () { 'use strict';
+
+/**
+* @name VueJS vChatScroll (vue-chat-scroll)
+* @description Monitors an element and scrolls to the bottom if a new child is added
+* @author Theodore Messinezis <theo@theomessin.com>
+* @file v-chat-scroll  directive definition
+*/
+
+var scrollToBottom = function scrollToBottom(el, smooth) {
+  el.scroll({
+    top: el.scrollHeight,
+    behavior: smooth ? 'smooth' : 'instant'
+  });
+};
+
+var vChatScroll = {
+  bind: function bind(el, binding) {
+    var scrolled = false;
+
+    el.addEventListener('scroll', function (e) {
+      scrolled = el.scrollTop + el.clientHeight + 1 < el.scrollHeight;
+    });
+
+    new MutationObserver(function (e) {
+      var config = binding.value || {};
+      var pause = config.always === false && scrolled;
+      if (pause || e[e.length - 1].addedNodes.length != 1) return;
+      scrollToBottom(el, config.smooth);
+    }).observe(el, { childList: true });
+  },
+  inserted: scrollToBottom
+};
+
+/**
+* @name VueJS vChatScroll (vue-chat-scroll)
+* @description Monitors an element and scrolls to the bottom if a new child is added
+* @author Theodore Messinezis <theo@theomessin.com>
+* @file vue-chat-scroll plugin definition
+*/
+
+var VueChatScroll = {
+  install: function install(Vue, options) {
+    Vue.directive('chat-scroll', vChatScroll);
+  }
+};
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(VueChatScroll);
+}
+
+return VueChatScroll;
+
+})));
+
+
+/***/ }),
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73579,14 +73698,36 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "msg_history" },
+    {
+      directives: [{ name: "chat-scroll", rawName: "v-chat-scroll" }],
+      staticClass: "msg_history"
+    },
     _vm._l(_vm.messages, function(message) {
       return _c("div", [
         _vm.user_id != message.user.id
           ? _c("div", { staticClass: "incoming_msg" }, [
               _c("div", { staticClass: "received_msg" }, [
                 _c("div", { staticClass: "received_withd_msg" }, [
-                  _c("p", [_vm._v(_vm._s(message.message))]),
+                  message.message != null
+                    ? _c("p", [_vm._v(_vm._s(message.message))])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("p", [
+                    message.filename != null
+                      ? _c(
+                          "a",
+                          {
+                            attrs: {
+                              href: _vm.route("download_file", {
+                                path: message.path,
+                                filename: message.filename
+                              })
+                            }
+                          },
+                          [_vm._v(_vm._s(message.filename))]
+                        )
+                      : _vm._e()
+                  ]),
                   _vm._v(" "),
                   _c("span", { staticClass: "time_date" }, [
                     _vm._v(" " + _vm._s(message.created_at) + " ")
@@ -73596,7 +73737,26 @@ var render = function() {
             ])
           : _c("div", { staticClass: "outgoing_msg" }, [
               _c("div", { staticClass: "sent_msg" }, [
-                _c("p", [_vm._v(_vm._s(message.message))]),
+                message.message != null
+                  ? _c("p", [_vm._v(_vm._s(message.message))])
+                  : _vm._e(),
+                _vm._v(" "),
+                _c("p", [
+                  message.filename != null
+                    ? _c(
+                        "a",
+                        {
+                          attrs: {
+                            href: _vm.route("download_file", {
+                              path: message.path,
+                              filename: message.filename
+                            })
+                          }
+                        },
+                        [_vm._v(_vm._s(message.filename))]
+                      )
+                    : _vm._e()
+                ]),
                 _vm._v(" "),
                 _c("span", { staticClass: "time_date" }, [
                   _vm._v(" " + _vm._s(message.created_at) + " ")
@@ -73618,19 +73778,19 @@ if (false) {
 }
 
 /***/ }),
-/* 169 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(170)
+  __webpack_require__(171)
 }
 var normalizeComponent = __webpack_require__(13)
 /* script */
-var __vue_script__ = __webpack_require__(175)
+var __vue_script__ = __webpack_require__(176)
 /* template */
-var __vue_template__ = __webpack_require__(177)
+var __vue_template__ = __webpack_require__(178)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73669,17 +73829,17 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 170 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(171);
+var content = __webpack_require__(172);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(173)("172775a0", content, false, {});
+var update = __webpack_require__(174)("172775a0", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -73695,10 +73855,10 @@ if(false) {
 }
 
 /***/ }),
-/* 171 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(172)(false);
+exports = module.exports = __webpack_require__(173)(false);
 // imports
 
 
@@ -73709,7 +73869,7 @@ exports.push([module.i, "\ninput[type=\"file\"][data-v-3f0ca373]{\n    opacity: 
 
 
 /***/ }),
-/* 172 */
+/* 173 */
 /***/ (function(module, exports) {
 
 /*
@@ -73791,7 +73951,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 173 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -73810,7 +73970,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(174)
+var listToStyles = __webpack_require__(175)
 
 /*
 type StyleObject = {
@@ -74019,7 +74179,7 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ }),
-/* 174 */
+/* 175 */
 /***/ (function(module, exports) {
 
 /**
@@ -74052,7 +74212,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 175 */
+/* 176 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -74116,19 +74276,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.$emit('messagesent', {
         user: this.user,
         message: this.newMessage,
+        r_user_id: 1,
         created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
       });
 
       this.newMessage = '';
     },
-    uploadFile: function uploadFile() {
-      this.$emit('uploadfile', {
+    uploadFiles: function uploadFiles() {
+      this.$emit('addfile', {
         user: this.user,
-        message: this.newMessage,
+        files: this.files,
+        r_user_id: 1,
         created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
       });
-
-      this.newMessage = '';
     },
     handleFiles: function handleFiles() {
       var uploadedFiles = this.$refs.files.files;
@@ -74141,7 +74301,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 176 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -74406,10 +74566,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 176;
+webpackContext.id = 177;
 
 /***/ }),
-/* 177 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -74464,7 +74624,7 @@ var render = function() {
           ],
           staticClass: "msg_attach_btn",
           attrs: { id: "btn-attach" },
-          on: { click: _vm.uploadFile }
+          on: { click: _vm.uploadFiles }
         },
         [
           _c("i", {
@@ -74516,28 +74676,7 @@ var render = function() {
               ])
             : _vm._e()
         ])
-      }),
-      _vm._v(" "),
-      _c(
-        "a",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.files.length > 0,
-              expression: "files.length > 0"
-            }
-          ],
-          staticClass: "submit-button",
-          on: {
-            click: function($event) {
-              _vm.submitFiles()
-            }
-          }
-        },
-        [_vm._v("Submit")]
-      )
+      })
     ],
     2
   )
@@ -74564,7 +74703,7 @@ if (false) {
 }
 
 /***/ }),
-/* 178 */
+/* 179 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
