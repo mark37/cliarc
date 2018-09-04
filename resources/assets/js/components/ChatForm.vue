@@ -74,11 +74,9 @@
         let uploadedFiles = this.$refs.files.files;
 
         for(var i = 0; i < uploadedFiles.length; i++) {
-            this.files.push(uploadedFiles[i]);
+          this.files.push(uploadedFiles[i]);
         }
       },
-
-      
     }    
   }
 </script>
@@ -87,7 +85,7 @@
     input[type="file"]{
         opacity: 0;
         width: 100%;
-        height: 200px;
+        height: 100px;
         position: absolute;
         cursor: pointer;
     }
@@ -96,8 +94,8 @@
         outline-offset: -10px;
         background: #ccc;
         color: dimgray;
-        padding: 10px 10px;
-        min-height: 200px;
+        padding: 5px 5px;
+        min-height: 100px;
         position: relative;
         cursor: pointer;
     }
@@ -108,7 +106,7 @@
     .filezone p {
         font-size: 1.2em;
         text-align: center;
-        padding: 50px 50px 50px 50px;
+        /* padding: 50px 50px 50px 50px; */
     }
     div.file-listing img{
         max-width: 90%;
@@ -135,18 +133,5 @@
     div.remove-container a{
         color: red;
         cursor: pointer;
-    }
-
-    a.submit-button{
-        display: block;
-        margin: auto;
-        text-align: center;
-        width: 200px;
-        padding: 10px;
-        text-transform: uppercase;
-        background-color: #CCC;
-        color: white;
-        font-weight: bold;
-        margin-top: 20px;
     }
 </style>
