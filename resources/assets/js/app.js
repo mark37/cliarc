@@ -29,11 +29,13 @@ const app = new Vue({
     el: '#app',
 
     data: {
-        messages: []
+        messages: [],
+        message_list: []
     },
 
     created() {
         this.fetchMessages();
+        this.fetchMessagesList();
 
         Echo.private('cliarc-development')
         .listen('MessageSent', (e) => {
@@ -45,52 +47,59 @@ const app = new Vue({
     },
 
     methods: {
-        fetchMessages() {
-            axios.get('/messages').then(response => {
-                this.messages = response.data;
-            });
-        },
+      fetchMessages() {
+        axios.get('/messages').then(response => {
+          this.messages = response.data;
+        });
+      },
 
-        addMessage(message) {
-            this.messages.push(message);
+      fetchMessagesList() {
+        axios.get('/messages/list').then(response => {
+          console.log(response.data);
+          this.message_list = response.data;
+        });
+      },
 
-            axios.post('/messages', message).then(response => {
-              console.log(response.data);
-            });
-        },
+      addMessage(message) {
+        this.messages.push(message);
 
-        uploadFile(data) {
-          for( let i = 0; i < data.files.length; i++ ){
-            if(data.files[i].id) {
-                continue;
-            }
-            let formData = new FormData();
-            formData.append('file', data.files[i]);
-            formData.append('r_user_id', 1);
-            formData.append('user_id', data.user.id);
+        axios.post('/messages', message).then(response => {
+          console.log(response.data);
+        });
+      },
 
-            axios.post('/messages/upload_file',
-                formData,
-                {
-                  headers: {
-                    'Content-Type': 'multipart/form-data'
-                  }
-                }
-            ).then(function(res) {
-              data.files[i].id = res['data']['id'];
-              data.files.splice(i, 1, data.files[i]);
-              this.messages.push({
-                message: null,
-                user: {'id': data.user.id},
-                path: res['data']['path'],
-                filename: res['data']['filename'],
-                created_at: moment().format('YYYY-MM-DD hh:mm:ss')
-              });
-              console.log('success');
-            }.bind(this)).catch(function(data) {
-              console.log(data);
-            });
+      uploadFile(data) {
+        for( let i = 0; i < data.files.length; i++ ){
+          if(data.files[i].id) {
+              continue;
           }
-        },
+          let formData = new FormData();
+          formData.append('file', data.files[i]);
+          formData.append('r_user_id', 1);
+          formData.append('user_id', data.user.id);
+
+          axios.post('/messages/upload_file',
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }
+          ).then(function(res) {
+            data.files[i].id = res['data']['id'];
+            data.files.splice(i, 1, data.files[i]);
+            this.messages.push({
+              message: null,
+              user: {'id': data.user.id},
+              path: res['data']['path'],
+              filename: res['data']['filename'],
+              created_at: moment().format('YYYY-MM-DD hh:mm:ss')
+            });
+            console.log('success');
+          }.bind(this)).catch(function(data) {
+            console.log(data);
+          });
+        }
+      },
     }
 });

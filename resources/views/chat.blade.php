@@ -25,7 +25,7 @@
   </div> -->
   <div class="messaging">
     <div class="inbox_msg">
-      <chat-list :list="messages" :user_id="{{ Auth::user()->id }}"></chat-messages>
+      <chat-list :message_list="message_list" :user_id="{{ Auth::user()->id }}"></chat-messages>
 
       <div class="mesgs">
         <chat-messages :messages="messages" :user_id="{{ Auth::user()->id }}"></chat-messages>
