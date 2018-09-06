@@ -30,15 +30,17 @@ const app = new Vue({
 
     data: {
         messages: [],
-        message_list: []
+        message_list: [],
+        r_user_id: []
     },
 
     created() {
-        this.fetchMessages();
+        // this.fetchMessages();
         this.fetchMessagesList();
 
         Echo.private('cliarc-development')
         .listen('MessageSent', (e) => {
+            console.log(e);
             this.messages.push({
             message: e.message.message,
             user: e.user
@@ -47,16 +49,19 @@ const app = new Vue({
     },
 
     methods: {
-      fetchMessages() {
-        axios.get('/messages').then(response => {
+      fetchMessages(data) {
+        axios.get('/messages', {params: {user_id: data.user_id}}).then(response => {            
           this.messages = response.data;
+          this.r_user_id = data.user_id;
         });
       },
 
       fetchMessagesList() {
         axios.get('/messages/list').then(response => {
-          console.log(response.data);
+            console.log(response.data);
           this.message_list = response.data;
+          this.r_user_id = this.message_list[0].r_user_id;
+          this.fetchMessages(this.message_list[0]);
         });
       },
 
@@ -64,6 +69,7 @@ const app = new Vue({
         this.messages.push(message);
 
         axios.post('/messages', message).then(response => {
+            this.fetchMessagesList();
           console.log(response.data);
         });
       },

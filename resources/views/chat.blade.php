@@ -25,8 +25,9 @@
   </div> -->
   <div class="messaging">
     <div class="inbox_msg">
-      <chat-list :message_list="message_list" :user_id="{{ Auth::user()->id }}"></chat-messages>
-
+      <div class="inbox_people">
+        <chat-list v-on:selectmessage="fetchMessages" :message_list="message_list" :user_id="{{ Auth::user()->id }}"></chat-messages>
+      </div>
       <div class="mesgs">
         <chat-messages :messages="messages" :user_id="{{ Auth::user()->id }}"></chat-messages>
 
@@ -35,6 +36,7 @@
               v-on:messagesent="addMessage"
               v-on:addfile="uploadFile"
               :user="{{ Auth::user() }}"
+              :r_user_id="r_user_id" 
           ></chat-form>
         </div>
       </div>

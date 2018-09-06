@@ -1,5 +1,5 @@
 <template>
-  <div class="inbox_people">
+  <div>
     <div class="headind_srch">
       <div class="recent_heading">
         <h4>Recent</h4>
@@ -13,14 +13,16 @@
       </div>
     </div>
     
-    <div class="inbox_chat" v-for="list in message_list">
-      <div class="chat_list active_chat">
-        <div class="chat_people">
-          <!-- <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div> -->
-          <div class="chat_ib">
-            <h5>{{ list.name }} <span class="chat_date">Dec 25</span></h5>
-            <p>Test, which is a new approach to have all solutions 
-              astrology under one roof.</p>
+    <div class="inbox_chat">
+      <div v-for="list in message_list">
+        <div class="chat_list" @click="selectMessage(list.user_id, list.r_user_id)">
+          <div class="chat_people">
+            <!-- <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div> -->
+            <div class="chat_ib">
+              <h5>{{ list.name }} <span class="chat_date"> {{ list.created_at }}</span></h5>
+              <p v-if="list.message != null">{{ list.message }}</p>
+              <p><a v-if="list.filename != null">{{ list.filename }}</a></p>
+            </div>
           </div>
         </div>
       </div>
@@ -31,5 +33,14 @@
 <script>
   export default {
     props: ['message_list'],
+
+    methods: {
+      selectMessage(user_id, r_user_id) {
+        this.$emit('selectmessage', {
+          user_id: user_id,
+          r_user_id: r_user_id
+        });
+      },
+    }
   };
 </script>

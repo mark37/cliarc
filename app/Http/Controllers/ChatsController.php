@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Events\MessageSent;
@@ -35,20 +36,47 @@ class ChatsController extends Controller
    * @return Message
    */
   public function fetchMessagesList(Request $request){
+    // return env('DB_DATABASE', 'test');
     $user = Auth::user();
 
-    return DB::select(DB::raw("SELECT messages.id, messages.user_id, MAX(messages.created_at) as created_at, users.name, 
-                      (SELECT message FROM message WHERE user_id = messages.user_id AND id = messages.id ORDER BY created_at DESC) as message
-                      FROM messages 
-                      JOIN users ON users.id = messages.user_id 
-                      WHERE r_user_id = $user->id
-                      GROUP BY messages.user_id"));
+    $receive =  Message::join('users','users.id','=','messages.user_id')
+                ->where('r_user_id','=',$user->id)
+                ->groupBy('messages.user_id')
+                ->orderBy('messages.created_at')
+                ->get(['messages.id as id', 'users.name as name', 
+                        'messages.message as message', 'messages.filename as filename', 
+                        'messages.created_at as created_at', 'messages.user_id as user_id', 
+                        'messages.r_user_id as r_user_id'])->toArray();
 
-    /* return Message::select('messages.user_id', 'users.name')
-          ->join('users', 'users.id', '=', 'messages.user_id')
-          ->where('r_user_id', '=', $user->id)
-          ->groupBy('messages.user_id')
-          ->get(); */
+    $message_list = array();
+    $send_id = array();
+
+    foreach($receive as $key => $value){
+      array_push($message_list, $value);
+      array_push($send_id, $value['user_id']);
+    }
+
+    $sent =  Message::join('users','users.id','=','messages.r_user_id')
+                ->where('user_id','=',$user->id)
+                ->whereNotIn('r_user_id', $send_id)
+                ->groupBy('messages.r_user_id')
+                ->orderBy('messages.created_at')
+                ->get(['messages.id as id', 'users.name as name', 
+                        'messages.message as message', 'messages.filename as filename', 
+                        'messages.created_at as created_at', 'messages.user_id as r_user_id', 
+                        'messages.r_user_id as user_id'])->toArray();
+
+    foreach($sent as $key => $value){
+      array_push($message_list, $value);
+      array_push($send_id, $value['user_id']);
+    }
+
+    usort($message_list, array($this, 'date_compare_d'));
+
+   /*  $contact = User::whereNotIn('id', $send_id)
+              ->get() */
+    return $message_list;
+    //     ->orWhere('user_id','=',$user->id) return $data = collect($data)->map(function($x){ return (array) $x; })->toArray(); 
   }
 
   /**
@@ -60,14 +88,47 @@ class ChatsController extends Controller
   {
     $user = Auth::user();
 
-    return Message::with('user')
+    $receive =  Message::with('user')
           ->where('r_user_id','=',$user->id)
           ->where('user_id', '=', $request->input('user_id'))
-          ->get();
+          ->orderBy('created_at', 'DESC')
+          ->get()->toArray();
+    
+    $sent = Message::with('user')
+          ->where('user_id','=',$user->id)
+          ->where('r_user_id', '=', $request->input('user_id'))
+          ->orderBy('created_at', 'DESC')
+          ->get()->toArray();
 
+    $messages = array();
+
+    foreach($receive as $key => $value){
+      array_push($messages, $value);
+    }
+
+    foreach($sent as $key => $value){
+      array_push($messages, $value);
+    }
+
+    usort($messages, array($this, 'date_compare'));
+
+    return $messages;
     //get messages for logged user
   }
 
+  function date_compare($a, $b)
+  {
+    $t1 = strtotime($a['created_at']);
+    $t2 = strtotime($b['created_at']);
+    return $t1 - $t2;
+  }    
+
+  function date_compare_d($a, $b)
+  {
+    $t1 = strtotime($a['created_at']);
+    $t2 = strtotime($b['created_at']);
+    return $t2 - $t1;
+  }
   /**
    * Persist message to database
    *

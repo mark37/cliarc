@@ -40,7 +40,7 @@
   import moment from 'moment'
 
   export default {
-    props: ['user'],
+    props: ['user', 'r_user_id'],
 
     data() {
       return {
@@ -54,7 +54,7 @@
         this.$emit('messagesent', {
           user: this.user,
           message: this.newMessage,
-          r_user_id: 1,
+          r_user_id: this.r_user_id,
           created_at: moment().format('YYYY-MM-DD hh:mm:ss')
         });
 
@@ -65,7 +65,7 @@
         this.$emit('addfile', {
           user: this.user,
           files: this.files,
-          r_user_id: 1,
+          r_user_id: this.r_user_id,
           created_at: moment().format('YYYY-MM-DD hh:mm:ss')
         });
       },

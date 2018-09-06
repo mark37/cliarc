@@ -118,6 +118,10 @@ img{ max-width:100%;}
   margin: 0;
   padding: 18px 16px 10px;
 }
+
+.chat_list:hover { cursor: pointer; background:#ebebeb; }
+/* .chat_people:hover{  } */
+
 .inbox_chat { height: 550px; overflow-y: scroll;}
 
 .active_chat{ background:#ebebeb;}
