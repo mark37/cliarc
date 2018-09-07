@@ -76,6 +76,7 @@ class ChatsController extends Controller
     $contacts = User::whereNotIn('id', $send_id)->get(['name', 'id as user_id'])->toArray();
     
     foreach($contacts as $key => $value){
+      $value['r_user_id'] = $user->id;
       array_push($message_list, $value);
     }
 
