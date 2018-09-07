@@ -27,6 +27,17 @@ Route::post('/product_list', 'ProductListController@store');
 Route::post('/product_list/{id}', 'ProductListController@update');
 Route::delete('/product_list/{id}', 'ProductListController@destroy');
 
+Route::get('/files_submitted', function (){
+    // return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types, 'item_statuses' => $item_status]);
+    $reports = DB::table('messages')
+                ->join('users', 'users.id', '=', 'messages.user_id')
+                ->where('filename', '!=', '')
+                ->orderBy('messages.created_at', 'DESC')
+                ->get(['messages.filename as filename', 'users.name as name', 'messages.created_at as created_at', 'messages.path as path_name']);
+
+    return view('layouts.reports', ['reports' => $reports]);
+});
+
 Route::get('/product_item_out', 'ProductItemOutController@index')->name('product_item_out');
 Route::get('/product_item_out/{id}', 'ProductItemOutController@show');
 Route::post('/product_item_out', 'ProductItemOutController@store');

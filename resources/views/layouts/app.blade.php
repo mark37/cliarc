@@ -265,6 +265,8 @@ img{ max-width:100%;}
                   <!-- <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li> -->
                   <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
                   <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
+                  <li><a class="dropdown-item" href="{{ url('/chat') }}">Messages</a></li>
+                  <li><a class="dropdown-item" href="{{ url('/files_submitted') }}">File Submitted</a></li>
                   <!-- <li><a class="dropdown-item" href="{{ url('/locations') }}">Groups</a></li> -->
                   <li>
                     <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

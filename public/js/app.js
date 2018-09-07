@@ -30424,15 +30424,17 @@ var app = new Vue({
   created: function created() {
     var _this = this;
 
-    // this.fetchMessages();
     this.fetchMessagesList();
 
     Echo.private('cliarc-development').listen('MessageSent', function (e) {
-      console.log(e);
-      _this.messages.push({
-        message: e.message.message,
-        user: e.user
-      });
+      console.log(e.message.r_user_id);
+      console.log(_this.user_id);
+      if (_this.user_id == e.message.r_user_id) {
+        _this.messages.push({
+          message: e.message.message,
+          user: e.user
+        });
+      }
     });
   },
 
@@ -30441,7 +30443,10 @@ var app = new Vue({
     fetchMessages: function fetchMessages(data) {
       var _this2 = this;
 
+      console.log(data);
+      this.user_id = data.r_user_id;
       axios.get('/messages', { params: { user_id: data.user_id } }).then(function (response) {
+        console.log(response.data);
         _this2.messages = response.data;
         _this2.r_user_id = data.user_id;
       });
@@ -30457,17 +30462,14 @@ var app = new Vue({
       });
     },
     addMessage: function addMessage(message) {
-      var _this4 = this;
-
       this.messages.push(message);
 
       axios.post('/messages', message).then(function (response) {
-        _this4.fetchMessagesList();
         console.log(response.data);
       });
     },
     uploadFile: function uploadFile(data) {
-      var _this5 = this;
+      var _this4 = this;
 
       var _loop = function _loop(i) {
         if (data.files[i].id) {
@@ -30493,7 +30495,7 @@ var app = new Vue({
             created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
           });
           console.log('success');
-        }.bind(_this5)).catch(function (data) {
+        }.bind(_this4)).catch(function (data) {
           console.log(data);
         });
       };
@@ -30526,9 +30528,9 @@ window.Popper = __webpack_require__(6).default;
  */
 
 try {
-    window.$ = window.jQuery = __webpack_require__(7);
+  window.$ = window.jQuery = __webpack_require__(7);
 
-    __webpack_require__(141);
+  __webpack_require__(141);
 } catch (e) {}
 
 /**
@@ -30550,9 +30552,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -30566,10 +30568,10 @@ if (token) {
 window.Pusher = __webpack_require__(162);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
-    broadcaster: 'pusher',
-    key: "59087228df5316fb414d",
-    cluster: "ap1",
-    encrypted: true
+  broadcaster: 'pusher',
+  key: "59087228df5316fb414d",
+  cluster: "ap1",
+  encrypted: true
 });
 
 /***/ }),
@@ -73869,7 +73871,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['message_list'],
+  props: ['message_list', 'r_user_id'],
 
   methods: {
     selectMessage: function selectMessage(user_id, r_user_id) {
@@ -73901,6 +73903,7 @@ var render = function() {
             "div",
             {
               staticClass: "chat_list",
+              class: { active_chat: list.user_id == _vm.r_user_id },
               on: {
                 click: function($event) {
                   _vm.selectMessage(list.user_id, list.r_user_id)
@@ -74036,7 +74039,7 @@ var content = __webpack_require__(175);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(177)("2cd19ce0", content, false, {});
+var update = __webpack_require__(177)("172775a0", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
