@@ -35,22 +35,27 @@ const app = new Vue({
     },
 
     created() {
-        // this.fetchMessages();
         this.fetchMessagesList();
 
         Echo.private('cliarc-development')
         .listen('MessageSent', (e) => {
-            console.log(e);
-            this.messages.push({
-            message: e.message.message,
-            user: e.user
-            });
+            console.log(e.message.r_user_id);
+            console.log(this.user_id);
+            if(this.user_id == e.message.r_user_id){
+              this.messages.push({
+                message: e.message.message,
+                user: e.user
+              });
+            }
         });
     },
 
     methods: {
       fetchMessages(data) {
-        axios.get('/messages', {params: {user_id: data.user_id}}).then(response => {            
+        console.log(data);
+        this.user_id = data.r_user_id;
+        axios.get('/messages', {params: {user_id: data.user_id}}).then(response => {  
+          console.log(response.data);          
           this.messages = response.data;
           this.r_user_id = data.user_id;
         });
@@ -58,7 +63,7 @@ const app = new Vue({
 
       fetchMessagesList() {
         axios.get('/messages/list').then(response => {
-            console.log(response.data);
+          console.log(response.data);
           this.message_list = response.data;
           this.r_user_id = this.message_list[0].r_user_id;
           this.fetchMessages(this.message_list[0]);
@@ -69,7 +74,6 @@ const app = new Vue({
         this.messages.push(message);
 
         axios.post('/messages', message).then(response => {
-            this.fetchMessagesList();
           console.log(response.data);
         });
       },

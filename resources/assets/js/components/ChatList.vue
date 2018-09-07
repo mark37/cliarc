@@ -15,7 +15,7 @@
     
     <div class="inbox_chat">
       <div v-for="list in message_list">
-        <div class="chat_list" @click="selectMessage(list.user_id, list.r_user_id)">
+        <div class="chat_list" v-bind:class="{ active_chat : list.user_id == r_user_id }" @click="selectMessage(list.user_id, list.r_user_id)">
           <div class="chat_people">
             <!-- <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div> -->
             <div class="chat_ib">
@@ -32,7 +32,7 @@
 
 <script>
   export default {
-    props: ['message_list'],
+    props: ['message_list', 'r_user_id'],
 
     methods: {
       selectMessage(user_id, r_user_id) {

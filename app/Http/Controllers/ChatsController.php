@@ -73,10 +73,13 @@ class ChatsController extends Controller
 
     usort($message_list, array($this, 'date_compare_d'));
 
-   /*  $contact = User::whereNotIn('id', $send_id)
-              ->get() */
+    $contacts = User::whereNotIn('id', $send_id)->get(['name', 'id as user_id'])->toArray();
+    
+    foreach($contacts as $key => $value){
+      array_push($message_list, $value);
+    }
+
     return $message_list;
-    //     ->orWhere('user_id','=',$user->id) return $data = collect($data)->map(function($x){ return (array) $x; })->toArray(); 
   }
 
   /**
