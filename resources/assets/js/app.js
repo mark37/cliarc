@@ -79,13 +79,14 @@ const app = new Vue({
       },
 
       uploadFile(data) {
+        console.log(data);
         for( let i = 0; i < data.files.length; i++ ){
           if(data.files[i].id) {
               continue;
           }
           let formData = new FormData();
           formData.append('file', data.files[i]);
-          formData.append('r_user_id', 1);
+          formData.append('r_user_id', data.r_user_id);
           formData.append('user_id', data.user.id);
 
           axios.post('/messages/upload_file',
