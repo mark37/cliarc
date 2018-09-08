@@ -5,9 +5,11 @@
     <div class="row justify-content-center">
       <div class="card">
         <div class="card-header"><span>{{ __('Item Masterlist') }}</span>
+          @if(Auth::user()->is_admin == 'Y')
           <span>
             <button class="btn btn-primary float-right" type="button" data-toggle="modal" data-target="#addItemModal">Add+</button>
           </span>
+          @endif
         </div>
           <!-- <div class="card-body"> -->
           <table style="table-layout: fixed; word-wrap: break-word;" class="table table-hover ">
@@ -31,30 +33,37 @@
                 <td>{{ $product->status_desc }}</td>
                 <!-- <td>Active</td> -->
                 <td width='30%'>
-                  <button class="btn btn-primary"
-                    data-productid="{{ $product->id }}"
-                    data-productname="{{ $product->product_name }}" 
-                    data-productdesc="{{ $product->product_desc }}" 
-                    data-productstatus="{{ $product->product_status }}" 
-                    data-productunit="{{ $product->product_unit }}" 
-                    data-producttype="{{ $product->product_type }}" 
-                    data-toggle="modal" data-target="#editModal">
-                    Edit
-                  </button>
+                  @if(Auth::user()->is_admin == 'Y')
+                  <div class="btn-group" data-toggle="button">
+                    <button class="btn btn-primary"
+                      data-productid="{{ $product->id }}"
+                      data-productname="{{ $product->product_name }}" 
+                      data-productdesc="{{ $product->product_desc }}" 
+                      data-productstatus="{{ $product->product_status }}" 
+                      data-productunit="{{ $product->product_unit }}" 
+                      data-producttype="{{ $product->product_type }}" 
+                      data-toggle="modal" data-target="#editModal">
+                      Edit
+                    </button>
 
+                    <button class="btn btn-danger"
+                      data-productid="{{ $product->id }}"
+                      data-productname="{{ $product->product_name }}" 
+                      data-toggle="modal" data-target="#deleteModal">
+                      Delete
+                    </button>
+                  </div>
+                @endif
+
+                @if(Auth::user()->account_type == 'CL')
                   <button class="btn btn-info"
                     data-productid="{{ $product->id }}"
                     data-productname="{{ $product->product_name }}" 
                     data-toggle="modal" data-target="#requestModal">
                     Request
                   </button>
-
-									<button class="btn btn-danger"
-                    data-productid="{{ $product->id }}"
-                    data-productname="{{ $product->product_name }}" 
-                    data-toggle="modal" data-target="#deleteModal">
-                    Delete
-                  </button>
+                @endif
+									
                 </td>
               </tr>
               @endforeach
@@ -226,12 +235,18 @@
                       <div class="form-group row">
                         <label for="product_type" class="col-md-4 col-form-label text-md-right">{{ __('Type') }}</label>
 
+                        <!-- <div class="form-group col">
+                          <div class="radio">
+                            <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}" {{ $item_type->type_id == 'BD' ? 'checked' : ''}}>{{ $item_type->type_desc }}</label>
+                            <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}" {{ $item_type->type_id == 'MC' ? 'checked' : ''}}>{{ $item_type->type_desc }}</label>
+                            <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}" {{ $item_type->type_id == 'EQ' ? 'checked' : ''}}>{{ $item_type->type_desc }}</label>
+                            <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}" {{ $item_type->type_id == 'SD' ? 'checked' : ''}}>{{ $item_type->type_desc }}</label>
+                          </div>
+                        </div> -->
                         <div class="form-group col">
                           @foreach ($item_types as $item_type)
                             <div class="radio">
                               <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}" {{ $item_type->type_id == 'BD' ? 'checked' : ''}}>{{ $item_type->type_desc }}</label>
-                          
-                              
                             </div>
                           @endforeach
                         </div>

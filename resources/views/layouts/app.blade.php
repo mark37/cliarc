@@ -85,7 +85,7 @@ img{ max-width:100%;}
 .headind_srch{ padding:10px 29px 10px 20px; overflow:hidden; border-bottom:1px solid #c4c4c4;}
 
 .recent_heading h4 {
-  color: #05728f;
+  color: #1c961f;
   font-size: 21px;
   margin: auto;
 }
@@ -145,6 +145,7 @@ img{ max-width:100%;}
   padding: 5px 10px 5px 12px;
   width: 100%;
 }
+
 .time_date {
   color: #747474;
   display: block;
@@ -159,7 +160,7 @@ img{ max-width:100%;}
 }
 
  .sent_msg p {
-  background: #05728f none repeat scroll 0 0;
+  background: #1c961f none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
   margin: 0; color:#fff;
@@ -182,7 +183,7 @@ img{ max-width:100%;}
 
 .type_msg {border-top: 1px solid #c4c4c4;position: relative;}
 .msg_send_btn {
-  background: #05728f none repeat scroll 0 0;
+  background: #1c961f none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;
@@ -196,17 +197,20 @@ img{ max-width:100%;}
 }
 
 .msg_attach_btn {
-  background: #05728f none repeat scroll 0 0;
+  background: #1c961f none repeat scroll 0 0;
   border: medium none;
   border-radius: 50%;
   color: #fff;
-  cursor: pointer;
   font-size: 17px;
   height: 33px;
   position: absolute;
   right: 35px;
   top: 11px;
   width: 33px;
+}
+
+.msg_attach_btn input:hover {
+  cursor: pointer;
 }
 
 .messaging { padding: 0 0 50px 0;}
@@ -228,21 +232,21 @@ img{ max-width:100%;}
 
         <div class="collapse navbar-collapse d-block" id="navbarSupportedContent" width="900px">
           <!-- Left Side Of Navbar -->  
-          <ul class="navbar-nav mr-auto">
+          <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/home') }}">{{ __('Home') }}</a>
+              <a class="nav-link {{ Route::currentRouteNamed('home') ? 'active' : ''}}" href="{{ url('/home') }}">{{ __('Home') }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/product_list') }}">{{ __('Products') }}</a>
+              <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ url('/product_list') }}">{{ __('Products') }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/') }}">{{ __('Schedules') }}</a>
+              <a class="nav-link {{ Route::currentRouteNamed('schedules') ? 'active' : ''}}" href="{{ url('/schedules') }}">{{ __('Schedules') }}</a>
             </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ url('/') }}">{{ __('Organizations') }}</a>
+            </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="{{ url('/') }}">{{ __('Organizations') }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url('/') }}">{{ __('About Us') }}</a>
+              <a class="nav-link {{ Route::currentRouteNamed('about') ? 'active' : ''}}" href="{{ url('/about') }}">{{ __('About Us') }}</a>
             </li>
           </ul>
 
@@ -259,7 +263,7 @@ img{ max-width:100%;}
             @else
             <li class="nav-item dropdown">
               <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->name }} 
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->last_name }}, {{ Auth::user()->first_name }} 
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <!-- <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li> -->
@@ -338,6 +342,14 @@ img{ max-width:100%;}
         modal.find('.modal-body #request_date').val(requestdate);
         modal.find('.modal-body #request_notes').val(requestnotes);
         modal.find('.modal-body #requested_by').val(requestedby);
+    });
+
+    $('#account_type').change(function(){
+      if($(this).val() == 'EM'){
+        $('#id_number').prop("disabled", false);        
+      }else{
+        $('#id_number').prop("disabled", true);
+      }
     });
   </script>
 </body>

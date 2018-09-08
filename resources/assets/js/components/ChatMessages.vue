@@ -5,7 +5,7 @@
         <div class="received_msg">
         <div class="received_withd_msg">
             <p v-if="message.message != null">{{ message.message }}</p>
-            <p><a v-if="message.filename != null" :href="route('download_file', {path: message.path, filename: message.filename} )">{{ message.filename }}</a></p>
+            <p><a style="color:#ffff00" v-if="message.filename != null" :href="route('download_file', {path: message.path, filename: message.filename} )">{{ message.filename }}</a></p>
             <span class="time_date"> {{ message.created_at }} </span>
         </div>
         </div>
@@ -13,7 +13,7 @@
       <div v-else class="outgoing_msg">
         <div class="sent_msg">
         <p v-if="message.message != null">{{ message.message }}</p>
-        <p><a v-if="message.filename != null" :href="route('download_file', {path: message.path, filename: message.filename} )">{{ message.filename }}</a></p>
+        <p><a style="color:#ffff00" v-if="message.filename != null" :href="route('download_file', {path: message.path, filename: message.filename} )">{{ message.filename }}</a></p>
         <span class="time_date"> {{ message.created_at }} </span>
         </div>
       </div>

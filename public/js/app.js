@@ -30471,13 +30471,15 @@ var app = new Vue({
     uploadFile: function uploadFile(data) {
       var _this4 = this;
 
+      console.log(data);
+
       var _loop = function _loop(i) {
         if (data.files[i].id) {
           return 'continue';
         }
         var formData = new FormData();
         formData.append('file', data.files[i]);
-        formData.append('r_user_id', 1);
+        formData.append('r_user_id', data.r_user_id);
         formData.append('user_id', data.user.id);
 
         axios.post('/messages/upload_file', formData, {
@@ -30528,9 +30530,9 @@ window.Popper = __webpack_require__(6).default;
  */
 
 try {
-  window.$ = window.jQuery = __webpack_require__(7);
+    window.$ = window.jQuery = __webpack_require__(7);
 
-  __webpack_require__(141);
+    __webpack_require__(141);
 } catch (e) {}
 
 /**
@@ -30552,9 +30554,9 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 var token = document.head.querySelector('meta[name="csrf-token"]');
 
 if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
 /**
@@ -30568,10 +30570,10 @@ if (token) {
 window.Pusher = __webpack_require__(162);
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
-  broadcaster: 'pusher',
-  key: "59087228df5316fb414d",
-  cluster: "ap1",
-  encrypted: true
+    broadcaster: 'pusher',
+    key: "59087228df5316fb414d",
+    cluster: "ap1",
+    encrypted: true
 });
 
 /***/ }),
@@ -73724,6 +73726,7 @@ var render = function() {
                       ? _c(
                           "a",
                           {
+                            staticStyle: { color: "#ffff00" },
                             attrs: {
                               href: _vm.route("download_file", {
                                 path: message.path,
@@ -73753,6 +73756,7 @@ var render = function() {
                     ? _c(
                         "a",
                         {
+                          staticStyle: { color: "#ffff00" },
                           attrs: {
                             href: _vm.route("download_file", {
                               path: message.path,
@@ -74039,7 +74043,7 @@ var content = __webpack_require__(175);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(177)("172775a0", content, false, {});
+var update = __webpack_require__(177)("2cd19ce0", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -74457,6 +74461,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -74483,6 +74489,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.newMessage = '';
     },
     uploadFiles: function uploadFiles() {
+      console.log(this.user);
+      console.log(this.r_user_id);
       this.$emit('addfile', {
         user: this.user,
         files: this.files,
@@ -74496,6 +74504,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       for (var i = 0; i < uploadedFiles.length; i++) {
         this.files.push(uploadedFiles[i]);
       }
+
+      this.uploadFiles();
     }
   }
 });
@@ -74776,123 +74786,68 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "input_msg_write" },
-    [
-      _c("input", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.newMessage,
-            expression: "newMessage"
+  return _c("div", { staticClass: "input_msg_write" }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.newMessage,
+          expression: "newMessage"
+        }
+      ],
+      staticClass: "write_msg",
+      attrs: { id: "btn-input", type: "text", placeholder: "Type a message" },
+      domProps: { value: _vm.newMessage },
+      on: {
+        keyup: function($event) {
+          if (
+            !("button" in $event) &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
           }
-        ],
-        staticClass: "write_msg",
-        attrs: { id: "btn-input", type: "text", placeholder: "Type a message" },
-        domProps: { value: _vm.newMessage },
+          return _vm.sendMessage($event)
+        },
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.newMessage = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("button", { staticClass: "msg_attach_btn" }, [
+      _c("input", {
+        ref: "files",
+        attrs: { id: "files", type: "file", multiple: "" },
         on: {
-          keyup: function($event) {
-            if (
-              !("button" in $event) &&
-              _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
-            ) {
-              return null
-            }
-            return _vm.sendMessage($event)
-          },
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.newMessage = $event.target.value
+          change: function($event) {
+            _vm.handleFiles()
           }
         }
       }),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          directives: [
-            {
-              name: "show",
-              rawName: "v-show",
-              value: _vm.files.length > 0,
-              expression: "files.length > 0"
-            }
-          ],
-          staticClass: "msg_attach_btn",
-          attrs: { id: "btn-attach" },
-          on: { click: _vm.uploadFiles }
-        },
-        [
-          _c("i", {
-            staticClass: "fa fa-upload",
-            attrs: { "aria-hidden": "true" }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "msg_send_btn",
-          attrs: { id: "btn-chat" },
-          on: { click: _vm.sendMessage }
-        },
-        [
-          _c("i", {
-            staticClass: "fa fa-paper-plane-o",
-            attrs: { "aria-hidden": "true" }
-          })
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "large-12 medium-12 small-12 filezone" }, [
-        _c("input", {
-          ref: "files",
-          attrs: { id: "files", type: "file", multiple: "" },
-          on: {
-            change: function($event) {
-              _vm.handleFiles()
-            }
-          }
-        }),
-        _vm._v(" "),
-        _vm._m(0)
-      ]),
-      _vm._v(" "),
-      _vm._l(_vm.files, function(file, key) {
-        return _c("div", { staticClass: "file-listing" }, [
-          _c("i", {
-            staticClass: "fa fa-file",
-            attrs: { "aria-hidden": "true" }
-          }),
-          _vm._v(" " + _vm._s(file.name) + "\n        "),
-          file.id > 0
-            ? _c("div", { staticClass: "success-container" }, [
-                _vm._v("\n            Success\n        ")
-              ])
-            : _vm._e()
-        ])
-      })
-    ],
-    2
-  )
+      _c("i", { staticClass: "fa fa-upload", attrs: { "aria-hidden": "true" } })
+    ]),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "msg_send_btn",
+        attrs: { id: "btn-chat" },
+        on: { click: _vm.sendMessage }
+      },
+      [
+        _c("i", {
+          staticClass: "fa fa-paper-plane-o",
+          attrs: { "aria-hidden": "true" }
+        })
+      ]
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", [
-      _vm._v("\n          Drop your files here "),
-      _c("br"),
-      _vm._v("or click to search\n        ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

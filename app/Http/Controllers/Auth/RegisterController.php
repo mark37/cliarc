@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+use Illuminate\Http\Request;
+
 class RegisterController extends Controller
 {
     /*
@@ -50,6 +52,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
+            'fist_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -61,12 +64,32 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function register(Request $request)
+    {
+        User::create([
+            'name' => $request->input('name'),
+            'fist_name' => $request->input('fist_name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'account_type' => $request->input('account_type'),
+            'org_id' => $request->input('org_id'),
+            'is_admin' => 'N',
+            'id_number' => $request->input('id_number'),
+        ]);
+
+        $redirectTo = '/home';
+    }
+    /* protected function register(array $data)
     {
         return User::create([
             'name' => $data['name'],
+            'fist_name' => $data['fist_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'account_type' => $data['account_type'],
+            'org_id' => $data['org_id'],
+            'is_admin' => 'N',
+            'id_number' => $data['id_number'],
         ]);
-    }
+    } */
 }

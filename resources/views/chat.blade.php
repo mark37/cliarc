@@ -3,26 +3,7 @@
 @section('content')
 
 <div class="container">
-<h3 class=" text-center">Messaging</h3>
-  <!-- <div class="card">
-    <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <div class="panel panel-default">
-          <div class="panel-heading">Chats</div>
-      
-          <div class="panel-body">
-            <chat-messages :messages="messages"></chat-messages>
-          </div>
-          <div class="panel-footer">
-            <chat-form
-                v-on:messagesent="addMessage"
-                :user="{{ Auth::user() }}"
-            ></chat-form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
+  <h3 class=" text-center">Messaging</h3>
   <div class="messaging">
     <div class="inbox_msg">
       <div class="inbox_people">
