@@ -30,7 +30,6 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -55,6 +54,10 @@ class RegisterController extends Controller
             'fist_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'account_type' => 'string|max:2',
+            'org_id' => 'string|max:2',
+            'is_admin' => 'string|max:1',
+            'id_number' => 'string|max:10',
         ]);
     }
 
@@ -68,7 +71,7 @@ class RegisterController extends Controller
     {
         User::create([
             'name' => $request->input('name'),
-            'fist_name' => $request->input('fist_name'),
+            'first_name' => $request->input('first_name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'account_type' => $request->input('account_type'),
@@ -77,19 +80,19 @@ class RegisterController extends Controller
             'id_number' => $request->input('id_number'),
         ]);
 
-        $redirectTo = '/home';
+        return view('layouts.registered');
     }
-    /* protected function register(array $data)
+    /* protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
-            'fist_name' => $data['fist_name'],
+            'first_name' => $data['first_name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'account_type' => $data['account_type'],
-            'org_id' => $data['org_id'],
+            'org_id' => '',
             'is_admin' => 'N',
             'id_number' => $data['id_number'],
-        ]);
-    } */
+        ]); 
+    }*/
 }

@@ -223,36 +223,27 @@ img{ max-width:100%;}
 </head>
 <body>
   <div id="app">
-    <img id="logo-main" class="mx-auto d-block" src="/images/cliarc-banner.jpg" width="1140px" height="200px" alt="Logo Thing main logo">
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark navbar-laravel">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <a class="navbar-brand" href="/home">Central Luzon Integrated Agricultural Research Center</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
-        <div class="collapse navbar-collapse d-block" id="navbarSupportedContent" width="900px">
-          <!-- Left Side Of Navbar -->  
-          <ul class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a class="nav-link {{ Route::currentRouteNamed('home') ? 'active' : ''}}" href="{{ url('/home') }}">{{ __('Home') }}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ url('/product_list') }}">{{ __('Products') }}</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link {{ Route::currentRouteNamed('schedules') ? 'active' : ''}}" href="{{ url('/schedules') }}">{{ __('Schedules') }}</a>
-            </li>
             <!-- <li class="nav-item">
-              <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ url('/') }}">{{ __('Organizations') }}</a>
+              <a class="nav-link {{ Route::currentRouteNamed('schedules') ? 'active' : ''}}" href="{{ url('/schedules') }}">{{ __('Schedules') }}</a>
             </li> -->
             <li class="nav-item">
               <a class="nav-link {{ Route::currentRouteNamed('about') ? 'active' : ''}}" href="{{ url('/about') }}">{{ __('About Us') }}</a>
             </li>
-          </ul>
 
-          <!-- Right Side Of Navbar -->
-          <ul class="navbar-nav ml-auto">
-            <!-- Authentication Links -->
             @guest
               <li class="nav-item">
                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -261,34 +252,38 @@ img{ max-width:100%;}
                 <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
               </li>
             @else
-            <li class="nav-item dropdown">
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->last_name }}, {{ Auth::user()->first_name }} 
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <!-- <li><a class="dropdown-item" href="{{ url('/users') }}">Users Accounts</a></li> -->
-                  <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/chat') }}">Messages</a></li>
-                  <li><a class="dropdown-item" href="{{ url('/files_submitted') }}">File Submitted</a></li>
-                  <!-- <li><a class="dropdown-item" href="{{ url('/locations') }}">Groups</a></li> -->
-                  <li>
-                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                      @csrf
-                    </form>
-                  </li>
-                </ul>
-              </div>
-            </li>
+              <li class="nav-item dropdown">
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->name }}, {{ Auth::user()->first_name }} 
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
+                    <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
+                    <li><a class="dropdown-item" href="{{ url('/chat') }}">Messages</a></li>
+                    <li><a class="dropdown-item" href="{{ url('/files_submitted') }}">File Submitted</a></li>
+                    <li>
+                      <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                      </form>
+                    </li>
+                  </ul>
+                </div>
+              </li>
             @endguest
           </ul>
         </div>
       </div>
     </nav>
-    <main class="py-4">
-      @yield('content')
-    </main>
+    <!-- <img id="logo-main" class="mx-auto d-block" src="/images/cliarc-banner.jpg" width="1140px" height="200px" alt="Logo Thing main logo"> -->
+    
+    
+      <main class="my-5">
+        <div class="my-5">
+        @yield('content')
+        </div>
+      </main>
+      
   </div>
 
   <!-- <script src="{{asset('js/app.js')}}"></script> -->

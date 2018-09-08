@@ -18,6 +18,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/registered', function (){
+    return view('layouts.registered');
+})->name('home');
+
+Route::get('/about', function (){
+    return view('layouts.about');
+})->name('about');
+
 Route::get('/users', 'UserController@index')->name('users');
 Route::get('/locations', 'LocationsController@index')->name('locations');
 

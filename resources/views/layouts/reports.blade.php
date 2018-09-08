@@ -3,7 +3,7 @@
 @section('content')
   <div class="container">
     <div class="row justify-content-center">
-      <div class="card">
+      <div class="card"  style="margin: 25px 0">
         <div class="card-header"><span>{{ __('Files/Reports Uploaded') }}</span>
         </div>
           <table style="table-layout: fixed; word-wrap: break-word;" class="table table-hover ">
