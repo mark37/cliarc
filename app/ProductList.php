@@ -13,6 +13,7 @@ class ProductList extends Model
       'product_desc',
       'product_unit',
       'product_type',
-      'product_status'
+      'product_status',
+      'filename'
   ];
 }

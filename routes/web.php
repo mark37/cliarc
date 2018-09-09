@@ -35,6 +35,12 @@ Route::post('/product_list', 'ProductListController@store');
 Route::post('/product_list/{id}', 'ProductListController@update');
 Route::delete('/product_list/{id}', 'ProductListController@destroy');
 
+Route::get('/schedule', 'ScheduleController@index')->name('schedule');
+Route::get('/schedule/{id}', 'ScheduleController@show');
+Route::post('/schedule', 'ScheduleController@store');
+Route::post('/schedule/{id}', 'ScheduleController@update');
+Route::delete('/schedule/{id}', 'ScheduleController@destroy');
+
 Route::get('/files_submitted', function (){
     // return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types, 'item_statuses' => $item_status]);
     $reports = DB::table('messages')

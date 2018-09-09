@@ -43,7 +43,7 @@ class ChatsController extends Controller
                 ->where('r_user_id','=',$user->id)
                 ->groupBy('messages.user_id')
                 ->orderBy('messages.created_at')
-                ->get(['messages.id as id', 'users.name as name', 
+                ->get(['messages.id as id', 'users.name as name', 'users.first_name as first_name',
                         'messages.message as message', 'messages.filename as filename', 
                         'messages.created_at as created_at', 'messages.user_id as user_id', 
                         'messages.r_user_id as r_user_id'])->toArray();
@@ -61,7 +61,7 @@ class ChatsController extends Controller
                 ->whereNotIn('r_user_id', $send_id)
                 ->groupBy('messages.r_user_id')
                 ->orderBy('messages.created_at')
-                ->get(['messages.id as id', 'users.name as name', 
+                ->get(['messages.id as id', 'users.name as name', 'users.first_name as first_name',
                         'messages.message as message', 'messages.filename as filename', 
                         'messages.created_at as created_at', 'messages.user_id as r_user_id', 
                         'messages.r_user_id as user_id'])->toArray();

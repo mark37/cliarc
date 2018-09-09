@@ -323,20 +323,33 @@ img{ max-width:100%;}
 
     });
 
-    $('#processRequestModal').on('show.bs.modal', function (event) {
+    $('#requestModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
-        var requestid = button.data('requestid')
+        var productid = button.data('productid')
         var productname = button.data('productname') 
-        var requestdate= button.data('requestdate')
-        var requestnotes= button.data('requestnotes')
-        var requestedby= button.data('requestedby')
+        var userid= button.data('userid')
         var modal = $(this)
         
-        modal.find('.modal-body #request_id').val(requestid);
+        modal.find('.modal-body #product_item_id').val(productid);
         modal.find('.modal-body #product_name').val(productname);
-        modal.find('.modal-body #request_date').val(requestdate);
-        modal.find('.modal-body #request_notes').val(requestnotes);
+        modal.find('.modal-body #user_id').val(userid);
+    });
+
+    $('#processRequestModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var productid = button.data('productid')
+        var productname = button.data('productname') 
+        var userid = button.data('userid')
+        var requestedby = button.data('requestedby')
+        var requestnotes = button.data('requestnotes')
+        var modal = $(this)
+
+        modal.find('.modal-body #product_item_id').val(productid);
+        modal.find('.modal-body #product_name').val(productname);
+        modal.find('.modal-body #user_id').val(userid);
         modal.find('.modal-body #requested_by').val(requestedby);
+        modal.find('.modal-body #request_notes').val(requestnotes);
+        modal.find('.modal-body #user_id').val(userid);
     });
 
     $('#account_type').change(function(){

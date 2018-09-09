@@ -19,7 +19,7 @@
           <div class="chat_people">
             <!-- <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div> -->
             <div class="chat_ib">
-              <h5>{{ list.name }} <span class="chat_date"> {{ list.created_at }}</span></h5>
+              <h5>{{ list.name }}, {{ list.first_name }}  <span class="chat_date"> {{ list.created_at }}</span></h5>
               <p v-if="list.message != null">{{ list.message }}</p>
               <p><a v-if="list.filename != null">{{ list.filename }}</a></p>
             </div>

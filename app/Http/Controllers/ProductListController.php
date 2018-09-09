@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\ProductList;
+use App\ProductItemOut;
 use App\LibItemType;
 use App\LibStatus;
+use Illuminate\Support\Facades\Input;
+
+use Storage;
+use File;
 
 class ProductListController extends Controller
 {
@@ -30,6 +35,21 @@ class ProductListController extends Controller
       $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')
                   ->join('lib_status','lib_status.status_id','=','product_list.product_status')
                   ->get();
+
+      foreach($products as $key => $value){
+        $check_status = ProductItemOut::where('product_item_id','=',$value->id)
+                        ->where('request_status_id','!=','RQ')
+                        ->whereNotNull('approved_date')
+                        ->whereNull('product_return_date')
+                        ->get();
+
+        if($check_status->count() > 0){
+          $value['request_status_id'] = 'NOT AVAILABLE';
+        }else{
+          $value['request_status_id'] = 'AVAILABLE';
+        }
+      }
+
       $item_types = LibItemType::all();
       $item_status = LibStatus::all();
       return view('layouts.product_list', ['products' => $products, 'item_types' => $item_types, 'item_statuses' => $item_status]);
@@ -54,15 +74,29 @@ class ProductListController extends Controller
     public function store(Request $request)
     {
       // return "TEST 2";
+      $file = $request->file('product_image');
+      if($file){
+        $filename= $file->getClientOriginalName();
       
-      ProductList::create([
-        'product_name' => $request->input('product_name'),
-        'product_desc' => $request->input('product_desc'),
-        'product_unit' => $request->input('product_unit'),
-        'product_status' => $request->input('product_status'),
-        'product_type' => $request->input('product_type')
-      ]);
+        Storage::disk('uploads')->put('product_image/'.$filename,  File::get($file));
 
+        ProductList::create([
+          'product_name' => $request->input('product_name'),
+          'product_desc' => $request->input('product_desc'),
+          'product_unit' => $request->input('product_unit'),
+          'product_status' => $request->input('product_status'),
+          'filename' => $filename,
+          'product_type' => $request->input('product_type')
+        ]);
+      }else{
+        ProductList::create([
+          'product_name' => $request->input('product_name'),
+          'product_desc' => $request->input('product_desc'),
+          'product_unit' => $request->input('product_unit'),
+          'product_status' => $request->input('product_status'),
+          'product_type' => $request->input('product_type')
+        ]);
+      }
       return back();
     }
 

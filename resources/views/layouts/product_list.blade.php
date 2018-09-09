@@ -2,8 +2,81 @@
 
 @section('content')
   <div class="container">
+    @if(Auth::user()->account_type == 'CL')
+      <div style="margin:25px 0">
+      &nbsp:
+      </div>
+      <div class="row text-center" style="margin:25px 0">
+        @foreach ($products as $product)
+          <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card">
+              <img class="card-img-top" src="storage/files/uploads/product_images/error 10-12 1051pm.PNG')" alt="banner 2"> <!-- /images/min-banner2.jpg -->
+              <div class="card-body">
+                <h4 class="card-title">{{ $product->product_name }}</h4>
+                <p class="card-text">{{ $product->product_desc }}</p>
+                <p class="card-text">Status: {{ $product->request_status_id }}</p>
+              </div>
+              <div class="card-footer" >
+                <button class="btn btn-info"
+                  data-productid="{{ $product->id }}"
+                  data-productname="{{ $product->product_name }}" 
+                  data-userid="{{ Auth::user()->id }}"
+                  data-toggle="modal" data-target="#requestModal" {{ $product->request_status_id == 'NOT AVAILABLE' ? 'disabled' : '' }}>
+                  Request
+                </button>
+              </div>
+            </div>
+          </div>
+        @endforeach
+
+        <!-- REQUEST MODAL -->
+        <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModals" aria-hidden="true">
+            <form method="POST" action="{{ route('product_item_out') }}" aria-label="{{ __('Request Product') }}">
+              @csrf
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="requestModals">Request Product</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <input id="product_item_id" type="hidden" name="product_item_id">
+                      <input id="user_id" type="hidden" name="user_id" value="{{ Auth::user()->id }} ">
+                      <div class="form-group row">
+                        <label for="product_name" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="product_name" type="text" class="form-control{{ $errors->has('product_name') ? ' is-invalid' : '' }}" name="product_name" disabled>
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="request_notes" class="col-md-4 col-form-label text-md-right">{{ __('Notes') }}</label>
+
+                        <div class="col-md-6">
+                          <textarea id="request_notes" rows="3" class="form-control{{ $errors->has('request_notes') ? ' is-invalid' : '' }}" name="request_notes"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Request</button>
+                    </div>
+                  </div>
+                </div> 
+              </div>
+            </form>
+          </div>
+        <!-- END REQUEST MODAL -->
+      </div>
+    @endif
+
+    @if(Auth::user()->account_type != 'CL')
     <div class="row justify-content-center">
       <div class="card"  style="margin: 25px 0">
+      
         <div class="card-header"><span>{{ __('Item Masterlist') }}</span>
           @if(Auth::user()->is_admin == 'Y')
           <span>
@@ -11,7 +84,9 @@
           </span>
           @endif
         </div>
-          <!-- <div class="card-body"> -->
+        
+
+          
           <table style="table-layout: fixed; word-wrap: break-word;" class="table table-hover ">
             <thead class="thead-light">
               <tr>
@@ -69,12 +144,11 @@
               @endforeach
             </tbody>
           </table>
-          <!-- </div> -->
-
-
+          
+          
           <!-- MODAL -->
           <div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModal" aria-hidden="true">
-            <form method="POST" action="{{ route('product_list') }}" aria-label="{{ __('Product') }}">
+            <form method="POST" enctype ="multipart/form-data" action="{{ route('product_list') }}" aria-label="{{ __('Product') }}">
               @csrf
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
@@ -99,6 +173,21 @@
                         </div>
                       </div>
 
+                      <!-- IMAGE -->
+                      <div class="form-group row">
+                        <label for="product_image" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="product_image" type="file" class="form-control{{ $errors->has('product_image') ? ' is-invalid' : '' }}" name="product_image" required>
+
+                          @if ($errors->has('product_image'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('product_image') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+                      <!-- END IMAGE -->
                       <div class="form-group row">
                         <label for="product_desc" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
 
@@ -292,49 +381,11 @@
           </div>
           <!-- END DELETE MODAL -->
 
-          <!-- REQUEST MODAL -->
-          <div class="modal fade" id="requestModal" tabindex="-1" role="dialog" aria-labelledby="requestModals" aria-hidden="true">
-            <form method="POST" action="{{ route('product_item_out') }}" aria-label="{{ __('Request Product') }}">
-              @csrf
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="requestModals">Request Product</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <input id="product_item_id" type="hidden" name="product_item_id">
-                      <input id="user_id" type="hidden" name="user_id" value="{{ Auth::user()->id }} ">
-                      <div class="form-group row">
-                        <label for="product_name" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
-
-                        <div class="col-md-6">
-                          <input id="product_name" type="text" class="form-control{{ $errors->has('product_name') ? ' is-invalid' : '' }}" name="product_name" disabled>
-                        </div>
-                      </div>
-
-                      <div class="form-group row">
-                        <label for="request_notes" class="col-md-4 col-form-label text-md-right">{{ __('Notes') }}</label>
-
-                        <div class="col-md-6">
-                          <textarea id="request_notes" rows="3" class="form-control{{ $errors->has('request_notes') ? ' is-invalid' : '' }}" name="request_notes"></textarea>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary">Request</button>
-                    </div>
-                  </div>
-                </div> 
-              </div>
-            </form>
-          </div>
-        <!-- END REQUEST MODAL -->
+          
         </div>
       </div>
     </div>
+    
+    @endif
   </div>
 @endsection
