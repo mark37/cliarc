@@ -78,7 +78,7 @@ class ProductListController extends Controller
       if($file){
         $filename= $file->getClientOriginalName();
       
-        Storage::disk('uploads')->put('product_image/'.$filename,  File::get($file));
+        Storage::disk('public')->put($filename,  File::get($file));
 
         ProductList::create([
           'product_name' => $request->input('product_name'),
