@@ -237,9 +237,9 @@ img{ max-width:100%;}
             <li class="nav-item">
               <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ url('/product_list') }}">{{ __('Products') }}</a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link {{ Route::currentRouteNamed('schedules') ? 'active' : ''}}" href="{{ url('/schedules') }}">{{ __('Schedules') }}</a>
-            </li> -->
+            <li class="nav-item">
+              <a class="nav-link {{ Route::currentRouteNamed('schedule') ? 'active' : ''}}" href="{{ url('/schedule') }}">{{ __('Schedules') }}</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link {{ Route::currentRouteNamed('about') ? 'active' : ''}}" href="{{ url('/about') }}">{{ __('About Us') }}</a>
             </li>

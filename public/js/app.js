@@ -73726,7 +73726,7 @@ var render = function() {
                       ? _c(
                           "a",
                           {
-                            staticStyle: { color: "#ffff00" },
+                            staticStyle: { color: "#000000" },
                             attrs: {
                               href: _vm.route("download_file", {
                                 path: message.path,
@@ -73918,7 +73918,9 @@ var render = function() {
               _c("div", { staticClass: "chat_people" }, [
                 _c("div", { staticClass: "chat_ib" }, [
                   _c("h5", [
-                    _vm._v(_vm._s(list.name) + " "),
+                    _vm._v(
+                      _vm._s(list.name) + ", " + _vm._s(list.first_name) + "  "
+                    ),
                     _c("span", { staticClass: "chat_date" }, [
                       _vm._v(" " + _vm._s(list.created_at))
                     ])
