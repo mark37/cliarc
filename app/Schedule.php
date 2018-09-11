@@ -8,6 +8,8 @@ class Schedule extends Model
 {
   protected $table = 'schedule';
 
+  protected $primaryKey = 'schedule_id';
+
   protected $fillable = [
       'schedule_name',
       'schedule_start_date',

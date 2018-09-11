@@ -312,6 +312,8 @@ img{ max-width:100%;}
         modal.find('.modal-body #productype').val(producttype);
     });
 
+   
+
     $('#deleteModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
         var productid = button.data('productid')
@@ -350,6 +352,30 @@ img{ max-width:100%;}
         modal.find('.modal-body #requested_by').val(requestedby);
         modal.find('.modal-body #request_notes').val(requestnotes);
         modal.find('.modal-body #user_id').val(userid);
+    });
+
+    $('#editSched').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var scheduleid = button.data('scheduleid') 
+        var schedulename = button.data('schedulename') 
+        var schedulesdate = button.data('schedulesdate') 
+        var scheduleedate = button.data('scheduleedate') 
+        var schedulevenue = button.data('schedulevenue') 
+        var modal = $(this)
+        
+        modal.find('.modal-body #schedule_id').val(scheduleid);
+        modal.find('.modal-body #schedule_name').val(schedulename);
+        modal.find('.modal-body #schedule_start_date').val(schedulesdate);
+        modal.find('.modal-body #schedule_end_date').val(scheduleedate);
+        modal.find('.modal-body #schedule_venue').val(schedulevenue);
+    });
+
+    $('#deleteSched').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) 
+        var scheduleid = button.data('scheduleid')  
+        var modal = $(this)
+        
+        modal.find('.modal-body #schedule_id').val(scheduleid);
     });
 
     $('#account_type').change(function(){

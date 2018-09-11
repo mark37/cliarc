@@ -138,24 +138,24 @@
           <!-- END MODAL -->
 
           <!-- EDIT MODAL -->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editSched" aria-hidden="true">
-              <form id="editSched" method="POST" action="{{ url('/product_list/'. 'test') }}" aria-label="{{ __('Product') }}">
+            <div class="modal fade" id="editSched" tabindex="-1" role="dialog" aria-labelledby="editScheds" aria-hidden="true">
+              <form id="editForm" method="POST" action="{{ url('/schedule/'. 'test') }}" aria-label="{{ __('Schedule') }}">
                 @csrf
                 <div class="modal-dialog" role="document">
                 
                   <div class="modal-content">
-                 
                     <div class="modal-header">
-                      <h5 class="modal-title" id="editSched">Edit Product</h5>
+                      <h5 class="modal-title" id="editScheds">Schedule</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
+
                     <div class="modal-body">
                       <input id="semindar_id" type="hidden" name="semindar_id">
                       <div class="form-group row">
                         <label for="schedule_name" class="col-md-4 col-form-label text-md-right">{{ __('Seminar Title') }}</label>
-
+                        <input id="schedule_id" type="hidden" name="schedule_id" required>
                         <div class="col-md-6">
                           <input id="schedule_name" type="text" class="form-control{{ $errors->has('schedule_name') ? ' is-invalid' : '' }}" name="schedule_name" required>
 
@@ -171,7 +171,7 @@
                         <label for="schedule_venue" class="col-md-4 col-form-label text-md-right">{{ __('Venue') }}</label>
 
                         <div class="col-md-6">
-                          <input id="prodschedule_venueuct_desc" type="text" class="form-control{{ $errors->has('schedule_venue') ? ' is-invalid' : '' }}" name="schedule_venue" required>
+                          <input id="schedule_venue" type="text" class="form-control{{ $errors->has('schedule_venue') ? ' is-invalid' : '' }}" name="schedule_venue" required>
 
                           @if ($errors->has('schedule_venue'))
                             <span class="invalid-feedback" role="alert">
@@ -210,26 +210,26 @@
                         </div>
                       </div>
                     </div>
+
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                       <button type="button" onclick="event.preventDefault(); document.getElementById('editForm').submit();" class="btn btn-primary">Update</button>
                     </div>
                   </div>
                 </div> 
-              </div>
-            </form>
-          </div>
+              </form>
+            </div>
           <!-- END EDIT MODAL -->
 
           <!-- DELETE MODAL -->
-          <div class="modal fade" id="deleteSched" tabindex="-1" role="dialog" aria-labelledby="deleteSched" aria-hidden="true">
+          <div class="modal fade" id="deleteSched" tabindex="-1" role="dialog" aria-labelledby="deleteScheds" aria-hidden="true">
             <form id="deleteForm" method="POST" action="{{ url('/schedule/'. 1) }}" aria-label="{{ __('Schedule') }}">
             {!! method_field('delete') !!}
             @csrf
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="deleteSched">Delete Product</h5>
+                    <h5 class="modal-title" id="deleteScheds">Delete Product</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
