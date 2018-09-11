@@ -69,13 +69,31 @@ class RegisterController extends Controller
      */
     protected function register(Request $request)
     {
+        if($request->input('account_type') == 'CL'){
+            $request->validate([
+                'name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
+                'first_name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6|confirmed',
+                'org_id' => 'string|max:2',
+            ]);
+        }else{
+            $request->validate([
+                'name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
+                'first_name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6|confirmed',
+                'id_number' => 'required|string|max:10'
+            ]);
+        }
+        
         User::create([
             'name' => $request->input('name'),
             'first_name' => $request->input('first_name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
             'account_type' => $request->input('account_type'),
-            'org_id' => $request->input('org_id'),
+            // 'org_id' => $request->input('org_id'),
             'is_admin' => 'N',
             'id_number' => $request->input('id_number'),
         ]);
