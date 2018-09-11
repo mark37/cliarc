@@ -75,6 +75,7 @@ class RegisterController extends Controller
                 'first_name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6|confirmed',
+                'terms_of_service' => 'required',
                 'org_id' => 'string|max:2',
             ]);
         }else{
@@ -83,6 +84,7 @@ class RegisterController extends Controller
                 'first_name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6|confirmed',
+                'terms_of_service' => 'required',
                 'id_number' => 'required|string|max:10'
             ]);
         }

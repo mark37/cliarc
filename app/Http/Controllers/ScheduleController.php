@@ -37,6 +37,13 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
+      $request->validate([
+        'schedule_name' => 'required|string|max:255',
+        'schedule_start_date' => 'required|date',
+        'schedule_end_date' => 'required|date',
+        'schedule_venue' => 'required|string|max:255'
+      ]);
+
       Schedule::create([
         'schedule_name' => $request->input('schedule_name'),
         'schedule_start_date' => Carbon::parse($request->input('schedule_start_date')),
@@ -78,6 +85,13 @@ class ScheduleController extends Controller
      */
     public function update(Request $request, $id)
     {
+      $request->validate([
+        'schedule_name' => 'required|string|max:255',
+        'schedule_start_date' => 'required|date',
+        'schedule_end_date' => 'required|date',
+        'schedule_venue' => 'required|string|max:255'
+      ]);
+      
       $schedule = Schedule::findOrFail($request->input('schedule_id'));
         $schedule->schedule_name = $request->input('schedule_name');
         $schedule->schedule_start_date = Carbon::parse($request->input('schedule_start_date'));
