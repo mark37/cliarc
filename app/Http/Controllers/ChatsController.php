@@ -36,8 +36,105 @@ class ChatsController extends Controller
    * @return Message
    */
   public function fetchMessagesList(Request $request){
-    // return env('DB_DATABASE', 'test');
+
     $user = Auth::user();
+    $message_list = array();
+    $send_id = array();
+
+    if($request->input('filter') != ''){
+      $contacts = User::where('id', '<>', $user->id);
+
+      if($user->account_type == 'CL'){
+        $contacts = $contacts->where('account_type', '=', 'EM');
+      }else if($user->account_type == 'EM'){
+        $contacts = $contacts->where('account_type', '=', 'EM');
+      }
+
+      $contacts = $contacts->where('name','LIKE','%' . $request->input('filter') . '%')->orWhere('first_name','LIKE','%' . $request->input('filter') . '%')
+                  ->get()
+                  ->toArray();
+      
+      foreach($contacts as $key => $value){
+        if($value['id'] != $user->id){
+          
+          $got_one = 0;
+          $receive =  Message::join('users','users.id','=','messages.r_user_id')
+                    ->where('r_user_id', '=', $value['id'])
+                    ->where('user_id', '=', $user->id)
+                    // ->groupBy('messages.user_id')
+                    ->orderBy('messages.created_at','DESC')
+                    ->limit(1)
+                    ->get(['messages.id as id', 'users.name as name', 'users.first_name as first_name',
+                            'messages.message as message', 'messages.filename as filename', 
+                            'messages.created_at as created_at', 'messages.user_id as r_user_id', 
+                            'messages.r_user_id as user_id'])->toArray();
+
+          if(sizeof($receive)>0){
+            foreach($receive as $key => $value){
+              array_push($message_list, $value);
+              array_push($send_id, $value['user_id']);
+            }
+            $got_one = 1;
+          }
+
+          $sent =  Message::join('users','users.id','=','messages.user_id')
+                      ->where('user_id','=', $value['id'])
+                      ->where('r_user_id', '=', $user->id)
+                      ->whereNotIn('r_user_id', $send_id)
+                      // ->groupBy('messages.r_user_id')
+                      ->orderBy('messages.created_at','DESC')
+                      
+                      ->limit(1)
+                      ->get(['messages.id as id', 'users.name as name', 'users.first_name as first_name',
+                      'messages.message as message', 'messages.filename as filename', 
+                      'messages.created_at as created_at', 'messages.user_id as r_user_id', 
+                      'messages.r_user_id as user_id'])->toArray();
+
+          if(sizeof($sent)>0){
+            foreach($sent as $key => $value){
+              array_push($message_list, $value);
+              array_push($send_id, $value['user_id']);
+            }
+            $got_one = 1;
+          }
+
+          usort($message_list, array($this, 'date_compare_d'));
+          
+          if($got_one == 0){
+            $value['user_id'] = $value['id'];
+            $value['r_user_id'] = $user->id;
+            array_push($message_list, $value);
+          } 
+        }
+      }
+      return $message_list;
+    }
+    /* if($request->input('filter') != ''){
+      $contacts = User::leftJoin('messages','users.id','=','messages.r_user_id')
+                  ->where('users.id','<>', $user->id);
+
+      if($user->account_type == 'CL'){
+        $contacts = $contacts->where('account_type', '=', 'EM');
+      }else if($user->account_type == 'EM'){
+        $contacts = $contacts->where('account_type', '=', 'EM');
+      }
+
+      $contacts = $contacts->where('name','LIKE','%' . $request->input('filter') . '%')->orWhere('first_name','LIKE','%' . $request->input('filter') . '%')
+                            ->groupBy('users.id')
+                            ->orderBy('messages.created_at')
+                            ->get(['messages.id as id', 'users.name as name', 'users.first_name as first_name',
+                            'messages.message as message', 'messages.filename as filename', 
+                            'messages.created_at as created_at', 'users.id as user_id', 
+                            'messages.r_user_id as r_user_id'])
+                            ->toArray();
+      
+      foreach($contacts as $key => $value){
+        $value['r_user_id'] = $user->id;
+        array_push($message_list, $value);
+      }
+
+      return $message_list;
+    } */
 
     $receive =  Message::join('users','users.id','=','messages.user_id')
                 ->where('r_user_id','=',$user->id)
@@ -48,8 +145,7 @@ class ChatsController extends Controller
                         'messages.created_at as created_at', 'messages.user_id as user_id', 
                         'messages.r_user_id as r_user_id'])->toArray();
 
-    $message_list = array();
-    $send_id = array();
+    
 
     foreach($receive as $key => $value){
       array_push($message_list, $value);
@@ -62,9 +158,9 @@ class ChatsController extends Controller
                 ->groupBy('messages.r_user_id')
                 ->orderBy('messages.created_at')
                 ->get(['messages.id as id', 'users.name as name', 'users.first_name as first_name',
-                        'messages.message as message', 'messages.filename as filename', 
-                        'messages.created_at as created_at', 'messages.user_id as r_user_id', 
-                        'messages.r_user_id as user_id'])->toArray();
+                'messages.message as message', 'messages.filename as filename', 
+                'messages.created_at as created_at', 'messages.user_id as r_user_id', 
+                'messages.r_user_id as user_id'])->toArray();
 
     foreach($sent as $key => $value){
       array_push($message_list, $value);
@@ -73,7 +169,22 @@ class ChatsController extends Controller
 
     usort($message_list, array($this, 'date_compare_d'));
 
-    $contacts = User::whereNotIn('id', $send_id)->get(['name', 'id as user_id'])->toArray();
+    $contacts = User::whereNotIn('id', $send_id)
+                ->where('id','<>', $user->id);
+
+    if($user->account_type == 'CL'){
+      $contacts = $contacts->where('account_type', '=', 'EM');
+    }else if($user->account_type == 'EM'){
+      $contacts = $contacts->where('account_type', '=', 'EM');
+    }else{
+
+    }
+
+    if($request->input('filter') != ''){
+      $contacts = $contacts->where('name','LIKE','%' . $request->input('filter') . '%')->orWhere('first_name','LIKE','%' . $request->input('filter') . '%');
+    }
+
+    $contacts = $contacts->get(['name','first_name', 'id as user_id'])->toArray();
     
     foreach($contacts as $key => $value){
       $value['r_user_id'] = $user->id;

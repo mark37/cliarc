@@ -302,6 +302,7 @@ img{ max-width:100%;}
         var productunit = button.data('productunit') 
         var productstatus = button.data('productstatus') 
         var producttype = button.data('producttype') 
+        var filename = button.data('filename') 
         var modal = $(this)
         
         modal.find('.modal-body #product_id').val(productid);
@@ -310,7 +311,9 @@ img{ max-width:100%;}
         modal.find('.modal-body #product_unit').val(productunit);
         modal.find('.modal-body #product_status').val(productunit);
         modal.find('.modal-body #productype').val(producttype);
+        modal.find('.modal-body #filename').val(filename);
     });
+    
 
    
 

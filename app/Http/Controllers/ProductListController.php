@@ -132,14 +132,36 @@ class ProductListController extends Controller
      */
     public function update(Request $request, $id)
     {
-      // return $request->input('product_id');
-      $product_list = ProductList::findOrFail($request->input('product_id'));
-        $product_list->product_name = $request->input('product_name');
-        $product_list->product_desc = $request->input('product_desc');
-        $product_list->product_unit = $request->input('product_unit');
-        $product_list->product_type = $request->input('product_type');
-        $product_list->product_status = $request->input('product_status');
-      $product_list->update();
+      // return $request->input('product_image');
+
+      $file = $request->file('product_image');
+
+
+      if($file){
+        $filename= $file->getClientOriginalName();
+      
+        Storage::disk('public')->put($filename,  File::get($file));
+
+        $product_list = ProductList::findOrFail($request->input('product_id'));
+          $product_list->product_name = $request->input('product_name');
+          $product_list->product_desc = $request->input('product_desc');
+          $product_list->product_unit = $request->input('product_unit');
+          $product_list->product_type = $request->input('product_type');
+          $product_list->product_status = $request->input('product_status');
+          $product_list->filename = $filename;
+        $product_list->update();
+      }else{
+        $product_list = ProductList::findOrFail($request->input('product_id'));
+          $product_list->product_name = $request->input('product_name');
+          $product_list->product_desc = $request->input('product_desc');
+          $product_list->product_unit = $request->input('product_unit');
+          $product_list->product_type = $request->input('product_type');
+          $product_list->product_status = $request->input('product_status');
+        $product_list->update();
+      }
+      return back();
+
+      
 
       return back();
     }

@@ -50,7 +50,7 @@
 
           <!-- MODAL -->
           <div class="modal fade" id="processRequestModal" tabindex="-1" role="dialog" aria-labelledby="processRequestModals" aria-hidden="true">
-            <form method="POST" action="{{ url('product_item_out/'.'test') }}" aria-label="{{ __('Product Request') }}">
+            <form method="POST" action="{{ url('/product_item_out/'.'test') }}" aria-label="{{ __('Product Request') }}">
               @csrf
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">

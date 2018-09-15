@@ -30418,7 +30418,8 @@ var app = new Vue({
   data: {
     messages: [],
     message_list: [],
-    r_user_id: []
+    r_user_id: [],
+    fiter: []
   },
 
   created: function created() {
@@ -30461,6 +30462,16 @@ var app = new Vue({
         _this3.fetchMessages(_this3.message_list[0]);
       });
     },
+    getList: function getList(data) {
+      var _this4 = this;
+
+      axios.get('/messages/list', { params: { filter: data.filter } }).then(function (response) {
+        console.log(response.data);
+        _this4.message_list = response.data;
+        _this4.r_user_id = _this4.message_list[0].r_user_id;
+        // this.fetchMessages(this.message_list[0]);
+      });
+    },
     addMessage: function addMessage(message) {
       this.messages.push(message);
 
@@ -30469,7 +30480,7 @@ var app = new Vue({
       });
     },
     uploadFile: function uploadFile(data) {
-      var _this4 = this;
+      var _this5 = this;
 
       console.log(data);
 
@@ -30497,7 +30508,7 @@ var app = new Vue({
             created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
           });
           console.log('success');
-        }.bind(_this4)).catch(function (data) {
+        }.bind(_this5)).catch(function (data) {
           console.log(data);
         });
       };
@@ -73756,7 +73767,7 @@ var render = function() {
                     ? _c(
                         "a",
                         {
-                          staticStyle: { color: "#ffff00" },
+                          staticStyle: { color: "#000000" },
                           attrs: {
                             href: _vm.route("download_file", {
                               path: message.path,
@@ -73874,15 +73885,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['message_list', 'r_user_id'],
 
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['message_list', 'r_user_id', 'filter'],
+
+  data: function data() {
+    return {
+      filterText: ''
+    };
+  },
+
+
+  watch: {
+    // whenever question changes, this function will run
+    filterText: function filterText(newFilterText, oldFilterText) {
+      // this.answer = 'Waiting for you to stop typing...'
+      this.debouncedGetAnswer();
+    }
+  },
+
+  created: function created() {
+    this.debouncedGetAnswer = _.debounce(this.getList, 500);
+  },
   methods: {
     selectMessage: function selectMessage(user_id, r_user_id) {
       this.$emit('selectmessage', {
         user_id: user_id,
         r_user_id: r_user_id
       });
+    },
+    getList: function getList() {
+      console.log(this.filterText);
+      this.$emit('getlist', {
+        filter: this.filterText
+      });
+    },
+
+
+    getAnswer: function getAnswer() {
+      var _this = this;
+
+      this.message_list = 'Searching...';
+      var vm = this;
+
+      axios.get('/messages/list', { params: { filter: filter } }).then(function (response) {
+        console.log(response.data);
+        _this.message_list = response.data;
+        _this.r_user_id = _this.message_list[0].r_user_id;
+        // this.fetchMessages(this.message_list[0]);
+      });
+      /* axios.get('https://yesno.wtf/api')
+        .then(function (response) {
+          vm.message_list = response.data.answer
+        })
+        .catch(function (error) {
+          vm.message_list = 'Error! Could not reach the API. ' + error
+        }) */
     }
   }
 });
@@ -73896,7 +73954,35 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _vm._m(0),
+    _c("div", { staticClass: "headind_srch" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "srch_bar" }, [
+        _c("div", { staticClass: "stylish-input-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.filterText,
+                expression: "filterText"
+              }
+            ],
+            staticClass: "search-bar",
+            attrs: { type: "text", placeholder: "Search" },
+            domProps: { value: _vm.filterText },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.filterText = $event.target.value
+              }
+            }
+          })
+        ])
+      ])
+    ]),
     _vm._v(" "),
     _c(
       "div",
@@ -73922,7 +74008,9 @@ var render = function() {
                       _vm._s(list.name) + ", " + _vm._s(list.first_name) + "  "
                     ),
                     _c("span", { staticClass: "chat_date" }, [
-                      _vm._v(" " + _vm._s(list.created_at))
+                      list.message
+                        ? _c("p", [_vm._v(_vm._s(list.created_at))])
+                        : _vm._e()
                     ])
                   ]),
                   _vm._v(" "),
@@ -73949,28 +74037,8 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "headind_srch" }, [
-      _c("div", { staticClass: "recent_heading" }, [
-        _c("h4", [_vm._v("Recent")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "srch_bar" }, [
-        _c("div", { staticClass: "stylish-input-group" }, [
-          _c("input", {
-            staticClass: "search-bar",
-            attrs: { type: "text", placeholder: "Search" }
-          }),
-          _vm._v(" "),
-          _c("span", { staticClass: "input-group-addon" }, [
-            _c("button", { attrs: { type: "button" } }, [
-              _c("i", {
-                staticClass: "fa fa-search",
-                attrs: { "aria-hidden": "true" }
-              })
-            ])
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "recent_heading" }, [
+      _c("h4", [_vm._v("Recent")])
     ])
   }
 ]

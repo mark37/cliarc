@@ -31,7 +31,8 @@ const app = new Vue({
     data: {
         messages: [],
         message_list: [],
-        r_user_id: []
+        r_user_id: [],
+        fiter: []
     },
 
     created() {
@@ -67,6 +68,15 @@ const app = new Vue({
           this.message_list = response.data;
           this.r_user_id = this.message_list[0].r_user_id;
           this.fetchMessages(this.message_list[0]);
+        });
+      },
+
+      getList(data){
+        axios.get('/messages/list' , {params: {filter: data.filter}}).then(response => {
+          console.log(response.data);
+          this.message_list = response.data;
+          this.r_user_id = this.message_list[0].r_user_id;
+          // this.fetchMessages(this.message_list[0]);
         });
       },
 

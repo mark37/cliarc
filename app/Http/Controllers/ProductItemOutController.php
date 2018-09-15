@@ -104,14 +104,7 @@ class ProductItemOutController extends Controller
         $request_list->return_status_id = $request->input('return_status_id');
         $request_list->remarks = $request->input('remarks');
       $request_list->update();
-
-      return view('layouts.request_list');
-      /* $table->integer('approved_by',false,true)->nullable();
-      $table->date('approved_date')->nullable();
-      $table->date('product_eta')->nullable();
-      $table->date('product_return_date')->nullable();
-      $table->string('return_status_id',2)->nullable();
-      $table->string('remarks', 255)->nullable(); */
+      return back();
     }
 
     /**

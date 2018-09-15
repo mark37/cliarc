@@ -46,7 +46,7 @@
                       <input id="user_id" type="hidden" name="user_id" value="{{ Auth::user()->id }} ">
                       <div class="form-group row">
                         <label for="product_name" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
-
+                  
                         <div class="col-md-6">
                           <input id="product_name" type="text" class="form-control{{ $errors->has('product_name') ? ' is-invalid' : '' }}" name="product_name" disabled>
                         </div>
@@ -101,7 +101,7 @@
             <tbody>
               @foreach ($products as $product)
               <tr>
-                <td>{{ $product->product_name }}</td>
+                <td>{{ $product->product_name }}<img class="card-img-top" src="storage/{{ $product->filename }}" alt="{{ $product->filename }}"></td>
                 <td>{{ $product->product_desc }}</td>
                 <td>{{ $product->product_unit }}</td>
                 <td>{{ $product->type_desc }}</td>
@@ -117,6 +117,7 @@
                       data-productstatus="{{ $product->product_status }}" 
                       data-productunit="{{ $product->product_unit }}" 
                       data-producttype="{{ $product->product_type }}" 
+                      data-filename="{{ $product->filename }}" 
                       data-toggle="modal" data-target="#editModal">
                       Edit
                     </button>
@@ -280,6 +281,22 @@
                           @endif
                         </div>
                       </div>
+
+                      <!-- IMAGE -->
+                      <div class="form-group row">
+                        <label for="product_image" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="product_image" type="file" class="form-control{{ $errors->has('product_image') ? ' is-invalid' : '' }}" name="product_image" required>
+
+                          @if ($errors->has('product_image'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('product_image') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+                      <!-- END IMAGE -->
 
                       <div class="form-group row">
                         <label for="product_desc" class="col-md-4 col-form-label text-md-right">{{ __('Description') }}</label>
