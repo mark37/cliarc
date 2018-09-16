@@ -40,7 +40,7 @@ class ProductListController extends Controller
         $products = $products->where('product_type', 'LIKE', $request->input('product_type'));
 
         if($request->input('product_type') =='EQ'){
-          $products = $products->where('product_type', 'LIKE', 'MC');
+          $products = $products->orWhere('product_type', 'LIKE', 'MC');
         }
       }
 
