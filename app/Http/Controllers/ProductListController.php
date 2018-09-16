@@ -38,6 +38,10 @@ class ProductListController extends Controller
 
       if($request->input('product_type')){
         $products = $products->where('product_type', 'LIKE', $request->input('product_type'));
+
+        if($request->input('product_type') =='EQ'){
+          $products = $products->where('product_type', 'LIKE', 'MC');
+        }
       }
 
       $products = $products->get();
