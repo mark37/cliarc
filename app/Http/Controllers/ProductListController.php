@@ -30,11 +30,17 @@ class ProductListController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+      // dd($request->input('product_type'));
       $products = ProductList::join('lib_item_type','lib_item_type.type_id','=','product_list.product_type')
-                  ->join('lib_status','lib_status.status_id','=','product_list.product_status')
-                  ->get();
+                  ->join('lib_status','lib_status.status_id','=','product_list.product_status');
+
+      if($request->input('product_type')){
+        $products = $products->where('product_type', 'LIKE', $request->input('product_type'));
+      }
+
+      $products = $products->get();
 
       foreach($products as $key => $value){
         $check_status = ProductItemOut::where('product_item_id','=',$value->id)

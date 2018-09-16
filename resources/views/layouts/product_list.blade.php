@@ -254,7 +254,7 @@
 
           <!-- EDIT MODAL -->
             <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModals" aria-hidden="true">
-              <form id="editForm" method="POST" action="{{ url('/product_list/'. 'test') }}" aria-label="{{ __('Product') }}">
+              <form id="editForm" method="POST" enctype ="multipart/form-data" action="{{ url('/product_list/'. 'test') }}" aria-label="{{ __('Product') }}">
                 @csrf
                 <div class="modal-dialog" role="document">
                 
@@ -318,7 +318,7 @@
                         <div class="form-group col">
                           @foreach ($item_statuses as $item_status)
                             <div class="radio">
-                              <label><input type="radio" name="product_status" value="{{ $item_status->status_id }}">{{ $item_status->status_desc }}</label>
+                              <label><input type="radio" name="product_status" value="{{ $item_status->status_id }}" {{ $item_status->status_id == 'OK' ? 'checked' : ''}}>{{ $item_status->status_desc }}</label>
                             </div>
                           @endforeach
                         </div>

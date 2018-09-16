@@ -62,7 +62,7 @@
           <p class="card-text">Vegetable seeds and fruit bearing tress/seedlings are distributed to all vegetable associations/cooperatives/farmer’s organizations and household to the program and expansion areas which designed to eradicate incidence of hunger, nutrious, safe, affordable vegetable, fruits and ensure sufficiency of the supply of vegetable/ fruits in the region..</p>
         </div>
         <div class="card-footer">
-          <a href="{{ url('/product_list') }}" class="btn btn-primary">Find Out More</a>
+          <a href="{{ route('product_list', ['product_type' => 'SD']) }}" class="btn btn-primary">Find Out More</a>
         </div>
       </div>
     </div>
@@ -75,7 +75,7 @@
           <p class="card-text">We serve as depository for farm machineries/equipments, rice/corn seeds and fertilizers in support to the Regional Banner Programs. </p>
         </div>
         <div class="card-footer">
-          <a href="{{ url('/product_list') }}" class="btn btn-primary">Find Out More</a>
+          <a href="{{ route('product_list',  ['product_type' => 'EQ']) }}" class="btn btn-primary">Find Out More</a>
         </div>
       </div>
     </div>

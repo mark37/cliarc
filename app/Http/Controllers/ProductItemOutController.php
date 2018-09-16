@@ -8,6 +8,7 @@ use App\ProductItemOut;
 use Carbon\Carbon;
 use App\LibRequestStatus;
 use App\LibReturnStatus;
+use Illuminate\Support\Facades\Auth;
 
 class ProductItemOutController extends Controller
 {
@@ -29,6 +30,7 @@ class ProductItemOutController extends Controller
                   ->leftJoin('lib_return_status','lib_return_status.return_status_id','=','product_item_out.return_status_id')
                   ->join('users','users.id','=','product_item_out.user_id')
                   ->join('product_list','product_list.id','=','product_item_out.product_item_id')
+                  ->whereNotIn('product_item_out.request_status_id', ['RT'])
                   ->get();
 
                  
@@ -97,14 +99,36 @@ class ProductItemOutController extends Controller
      */
     public function update(Request $request, $id)
     {
+      
+      $user = Auth::user();
       $request_list = ProductItemOut::findOrFail($request->input('request_id'));
         $request_list->request_status_id = $request->input('request_status_id');
-        $request_list->approved_by = $request->input('user_id');
+        $request_list->approved_by = $user->id;
         $request_list->approved_date = Carbon::now();
         $request_list->return_status_id = $request->input('return_status_id');
         $request_list->remarks = $request->input('remarks');
       $request_list->update();
+
       return back();
+      $requests = ProductItemOut:: select('product_item_out.id as request_id', 'product_list.product_name as product_name',
+            'product_item_out.request_status_id as request_status_id', 'product_item_out.request_date as request_date',
+            'users.name as name', 'product_item_out.approved_by as approved_by',
+            'product_item_out.approved_date as approved_date', 'product_item_out.product_eta as product_eta',
+            'product_item_out.product_return_date as product_return_date', 'lib_return_status.return_status_desc as return_status_desc',
+            'product_item_out.remarks as remarks', 'product_item_out.request_notes as request_notes',
+            'lib_request_status.request_status_desc as request_status_desc')
+            ->leftJoin('lib_request_status','lib_request_status.request_status_id','=','product_item_out.request_status_id')
+            ->leftJoin('lib_return_status','lib_return_status.return_status_id','=','product_item_out.return_status_id')
+            ->join('users','users.id','=','product_item_out.user_id')
+            ->join('product_list','product_list.id','=','product_item_out.product_item_id')
+            ->get();
+
+          
+      $request_status = LibRequestStatus::all();
+      $return_status = LibReturnStatus::all();
+
+      return view('layouts.request_list', ['requests' => $requests, 'request_status' => $request_status, 'return_status' => $return_status]);
+      // return back();
     }
 
     /**

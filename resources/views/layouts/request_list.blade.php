@@ -32,15 +32,27 @@
                 <td>{{ $request->request_status_desc }}</td>
                 <td>{{ $request->date_returned }}</td>
                 <td>
-                  <button class="btn btn-primary"
-                    data-requestid = "{{ $request->request_id}}"
-                    data-productname="{{ $request->product_name }}"
-                    data-requestdate="{{ $request->request_date }}"
-                    data-requestnotes="{{ $request->request_notes }}"
-                    data-requestedby="{{ $request->name }}"
-                    data-toggle="modal" data-target="#processRequestModal">
-                    Process Request
-                  </button>
+                  @if($request->request_status_id == 'RQ')
+                    <button class="btn btn-primary"
+                      data-requestid = "{{ $request->request_id}}"
+                      data-productname="{{ $request->product_name }}"
+                      data-requestdate="{{ $request->request_date }}"
+                      data-requestnotes="{{ $request->request_notes }}"
+                      data-requestedby="{{ $request->name }}"
+                      data-toggle="modal" data-target="#processRequestModal">
+                      Process Request
+                    </button>
+                  @else
+                    <button class="btn btn-primary"
+                      data-requestid = "{{ $request->request_id}}"
+                      data-productname="{{ $request->product_name }}"
+                      data-requestdate="{{ $request->request_date }}"
+                      data-requestnotes="{{ $request->request_notes }}"
+                      data-requestedby="{{ $request->name }}"
+                      data-toggle="modal" data-target="#processRequestModal">
+                      Return Item
+                    </button>
+                  @endif
                 </td>
               </tr>
               @endforeach
@@ -51,6 +63,7 @@
           <!-- MODAL -->
           <div class="modal fade" id="processRequestModal" tabindex="-1" role="dialog" aria-labelledby="processRequestModals" aria-hidden="true">
             <form method="POST" action="{{ url('/product_item_out/'.'test') }}" aria-label="{{ __('Product Request') }}">
+              <!-- @method('PUT') -->
               @csrf
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">

@@ -257,10 +257,21 @@ img{ max-width:100%;}
                   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->name }}, {{ Auth::user()->first_name }} 
                   <span class="caret"></span></button>
                   <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
+                    <li>
+                      <a class="dropdown-item" href="{{ url('/product_list') }}">
+                        @if(Auth::user()->account_type == 'CL')
+                          Product List
+                        @else
+                          Item Masterlist
+                        @endif
+                      </a>
+                    </li>
                     <li><a class="dropdown-item" href="{{ url('/chat') }}">Messages</a></li>
-                    <li><a class="dropdown-item" href="{{ url('/files_submitted') }}">File Submitted</a></li>
+
+                    @if(Auth::user()->account_type != 'CL')
+                      <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
+                      <li><a class="dropdown-item" href="{{ url('/files_submitted') }}">File Submitted</a></li>
+                    @endif
                     <li>
                       <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -342,14 +353,14 @@ img{ max-width:100%;}
 
     $('#processRequestModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) 
-        var productid = button.data('productid')
+        var requestid = button.data('requestid')
         var productname = button.data('productname') 
         var userid = button.data('userid')
         var requestedby = button.data('requestedby')
         var requestnotes = button.data('requestnotes')
         var modal = $(this)
 
-        modal.find('.modal-body #product_item_id').val(productid);
+        modal.find('.modal-body #request_id').val(requestid);
         modal.find('.modal-body #product_name').val(productname);
         modal.find('.modal-body #user_id').val(userid);
         modal.find('.modal-body #requested_by').val(requestedby);
