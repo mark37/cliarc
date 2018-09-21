@@ -33,21 +33,21 @@
               <p class="about-paddingB">+63 948 - 316 - 5947</p>
 
               <div class="about-icons"> 
-                <ul >
-                  <li><a href="https://www.facebook.com/"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a> </li>
+                <ul>
+                  <li><a href="https://www.facebook.com/cliarcmtdc"><i id="social-fb" class="fa fa-facebook-square fa-3x social"></i></a> </li>
                   <!-- <li><a href="https://twitter.com/"><i id="social-tw" class="fa fa-twitter-square fa-3x social"></i></a> </li> -->
                   <!-- <li> <a href="https://plus.google.com/"><i id="social-gp" class="fa fa-google-plus-square fa-3x social"></i></a> </li> -->
-                  <li> <a href="mailto:test@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a> </li>
+                  <li> <a href="mailto:darfo3mtdc@gmail.com"><i id="social-em" class="fa fa-envelope-square fa-3x social"></i></a> </li>
                 </ul>       
               </div>
             </div>
           </div>
         
-          <!-- <div class="col-md-5 col-sm-6">
+          <div class="col-md-5 col-sm-6">
             <div class="about-img">
-              <img src="https://devitems.com/preview/appmom/img/mobile/2.png" alt="">
+              <img src="/images/about-us.jpg" alt="about-us-image">
             </div>
-          </div>	 -->
+          </div>	
         </div>
       </div>
     </div>

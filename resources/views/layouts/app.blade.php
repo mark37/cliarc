@@ -224,7 +224,7 @@ img{ max-width:100%;}
   .gray-bg {background: #F1F1F1 !important;}
   .about-title {}
   .about-title h1 {color: #535353; font-size:45px;font-weight:600;}
-  .about-title span {color: #AF0808; font-size:45px;font-weight:700;}
+  .about-title span {color: #14a743; font-size:45px;font-weight:700;}
   .about-title h3 {color: #535353; font-size:23px;margin-bottom:24px;}
   .about-title p {color: #7a7a7a;line-height: 1.8;margin: 0 0 15px;}
   .about-paddingB {padding-bottom: 12px;}
