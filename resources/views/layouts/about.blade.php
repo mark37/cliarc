@@ -7,7 +7,7 @@
         <div class="row">
           <div class="col-md-7 col-sm-6">
             <div class="about-title clearfix">
-              <h1>About <span>CLIARCMTDC</span></h1>
+              <h1>About <span>CLIARCLD</span></h1>
               <h3>History</h3>
               <p class="about-paddingB">In 1933, the Philippines is under the Commonwealth government headed by Pres.
               Manuel Luis Quezon is a country to be developed. Since the country’s main livelihood 
@@ -23,7 +23,7 @@
               <p class="about-paddingB">Training and Seminar.</p>
 
               <h3>Location</h3>
-              <p class="about-paddingB">LIARC Compound, McArthur Highway, Brgy. Paraiso, Tarlac City, Tarlac
+              <p class="about-paddingB">CLIARC Compound, McArthur Highway, Brgy. Paraiso, Tarlac City, Tarlac
               2300 Tarlac, Tarlac</p>
 
               <h3>Land</h3>
