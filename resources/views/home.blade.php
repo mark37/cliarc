@@ -43,7 +43,7 @@
 
     <div class="col-lg-3 col-md-6 mb-4">
       <div class="card">
-        <img class="card-img-top" src="/images/min-banner1.jpg" alt="banner 1">
+        <img class="card-img-top" src="/images/Grass-cutter-1.jpg" alt="cutter 1">
         <div class="card-body">
           <h4 class="card-title">Seminars</h4>
           <p class="card-text">CLIARC Provides technical assistance by means of seminars, trainings, consultations and technology demonstration.</p>
