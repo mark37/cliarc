@@ -256,7 +256,10 @@ img{ max-width:100%;}
               <a class="nav-link {{ Route::currentRouteNamed('home') ? 'active' : ''}}" href="{{ url('/home') }}">{{ __('Home') }}</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ url('/product_list') }}">{{ __('Products') }}</a>
+              <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ route('product_list',  ['product_type' => 'SD']) }}">{{ __('Products') }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{ Route::currentRouteNamed('product_list') ? 'active' : ''}}" href="{{ route('product_list',  ['product_type' => 'EQ']) }}">{{ __('Equipment') }}</a>
             </li>
             <li class="nav-item">
               <a class="nav-link {{ Route::currentRouteNamed('schedule') ? 'active' : ''}}" href="{{ url('/schedule') }}">{{ __('Schedules') }}</a>
@@ -278,15 +281,12 @@ img{ max-width:100%;}
                   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">{{ Auth::user()->name }}, {{ Auth::user()->first_name }} 
                   <span class="caret"></span></button>
                   <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="{{ url('/product_list') }}">
-                        @if(Auth::user()->account_type == 'CL')
-                          Product List
-                        @else
-                          Item Masterlist
-                        @endif
-                      </a>
-                    </li>
+                    @if(Auth::user()->account_type == 'CL')
+                      <li><a class="dropdown-item" href="{{ route('product_list',  ['product_type' => 'SD']) }}">Product</a></li>
+                      <li><a class="dropdown-item" href="{{ route('product_list',  ['product_type' => 'EQ']) }}">Equipment</a></li>
+                    @else
+                      <li><a class="dropdown-item" href="{{ url('/product_list') }}">Item Masterlist</a></li>
+                    @endif
                     <li><a class="dropdown-item" href="{{ url('/chat') }}">Messages</a></li>
 
                     @if(Auth::user()->account_type != 'CL')

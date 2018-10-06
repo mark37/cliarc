@@ -18,7 +18,10 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Venue</th>
-                <th>Action</th>
+                @if(Auth::user()->is_admin == 'Y')
+                  <th>Action</th>
+                @endif
+                
               </tr>
             </thead>
             <tbody>
@@ -48,7 +51,7 @@
                       Delete
                     </button>
                   </div>
-                @endif
+                  @endif
                 </td>
               </tr>
               @endforeach
