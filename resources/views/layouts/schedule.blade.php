@@ -15,6 +15,7 @@
             <thead class="thead-light">
               <tr>
                 <th>Name</th>
+                <th>Details</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Venue</th>
@@ -28,6 +29,7 @@
               @foreach ($schedules as $schedule)
               <tr>
                 <td>{{ $schedule->schedule_name }}</td>
+                <td>{{ $schedule->schedule_desc }}</td>
                 <td>{{ $schedule->schedule_start_date }}</td>
                 <td>{{ $schedule->schedule_end_date }}</td>
                 <td>{{ $schedule->schedule_venue }}</td>
@@ -37,6 +39,7 @@
                     <button class="btn btn-primary"
                       data-scheduleid="{{ $schedule->schedule_id }}"
                       data-schedulename="{{ $schedule->schedule_name }}" 
+                      data-scheduledesc="{{ $schedule->schedule_desc }}" 
                       data-schedulesdate="{{ $schedule->schedule_start_date }}" 
                       data-scheduleedate="{{ $schedule->schedule_end_date }}" 
                       data-schedulevenue="{{ $schedule->schedule_venue }}" 
@@ -81,6 +84,20 @@
                           @if ($errors->has('schedule_name'))
                             <span class="invalid-feedback" role="alert">
                               <strong>{{ $errors->first('schedule_name') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="schedule_desc" class="col-md-4 col-form-label text-md-right">{{ __('Seminar Description') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="schedule_desc" type="text" class="form-control{{ $errors->has('schedule_desc') ? ' is-invalid' : '' }}" name="schedule_desc" required>
+
+                          @if ($errors->has('schedule_desc'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('schedule_desc') }}</strong>
                             </span>
                           @endif
                         </div>
@@ -165,6 +182,20 @@
                           @if ($errors->has('schedule_name'))
                             <span class="invalid-feedback" role="alert">
                               <strong>{{ $errors->first('schedule_name') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="schedule_desc" class="col-md-4 col-form-label text-md-right">{{ __('Seminar Description') }}</label>
+                        <input id="schedule_id" type="hidden" name="schedule_id" required>
+                        <div class="col-md-6">
+                          <input id="schedule_desc" type="text" class="form-control{{ $errors->has('schedule_desc') ? ' is-invalid' : '' }}" name="schedule_desc" required>
+
+                          @if ($errors->has('schedule_desc'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('schedule_desc') }}</strong>
                             </span>
                           @endif
                         </div>

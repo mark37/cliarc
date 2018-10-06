@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Message;
 use App\ProductItemOut;
 use Carbon\Carbon;
 use App\LibRequestStatus;
@@ -101,6 +102,38 @@ class ProductItemOutController extends Controller
     {
       
       $user = Auth::user();
+
+      $check_rq = ProductItemOut::join('product_list' , 'product_list.id', '=', 'product_item_out.product_item_id')
+                  ->join('users', 'users.id', '=', 'product_item_out.user_id')
+                  ->where('product_item_out.id', '=', $request->input('request_id'))
+                  ->first();
+
+      if($check_rq->request_status_id != $request->input('request_status_id')){
+        switch ($request->input('request_status_id')){
+          case 'AP':
+            $message = "Your request of '$check_rq->product_name'  has been approved!";
+            break;
+          case 'AQ':
+            $message = "";
+            break;
+          case 'RT':
+            $message = "Thank you for returning the '$check_rq->product_name' that you have requested.";
+            break;
+          case 'MS':
+            $message = "";
+            break;
+          default:
+            break;
+        }
+
+        Message::create([
+          'message' => $message,
+          'r_user_id' => $check_rq->user_id,
+          'message_seen' => 'N',
+          'user_id' => $user->id
+        ]);
+      }
+
       $request_list = ProductItemOut::findOrFail($request->input('request_id'));
         $request_list->request_status_id = $request->input('request_status_id');
         $request_list->approved_by = $user->id;

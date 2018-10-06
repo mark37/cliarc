@@ -32,7 +32,8 @@ const app = new Vue({
         messages: [],
         message_list: [],
         r_user_id: [],
-        fiter: []
+        fiter: [],
+        currentDate: new Date(),
     },
 
     created() {
@@ -81,11 +82,37 @@ const app = new Vue({
       },
 
       addMessage(message) {
+        console.log(message);
         this.messages.push(message);
 
         axios.post('/messages', message).then(response => {
+          if(this.currentDate.getDay() == 0 || this.currentDate.getDay() == 6
+            || this.currentDate.getHours() < 8 || this.currentDate.getHours() > 17){
+
+            var message_notif = "Thank you for sending us a message, but our office is closed as of this moment. CLIARCLDs office hours is from Mon-Fri at 8:00 AM-5:00 PM. Thank you!";
+            this.messages.push({
+              message: message_notif,
+              user: {'id': message.r_user_id},
+              r_user_id: message.user.id,
+              created_at: moment().format('YYYY-MM-DD hh:mm:ss')
+            });
+    
+            var bot_message = {
+              message: message_notif,
+              user_id: message.r_user_id,
+              r_user_id: message.user.id,
+              created_at: moment().format('YYYY-MM-DD hh:mm:ss'),
+              auto_reply: 'Y'
+            }
+
+            axios.post('/messages', bot_message).then(response => {
+              console.log(response.data);
+            });  
+          }
           console.log(response.data);
         });
+
+        
       },
 
       uploadFile(data) {

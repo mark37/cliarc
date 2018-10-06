@@ -252,11 +252,23 @@ class ChatsController extends Controller
    */
   public function sendMessage(Request $request)
   {
+    if($request->input('auto_reply') == 'Y'){
+      Message::create([
+        'message' => $request->input('message'),
+        'r_user_id' => $request->input('r_user_id'),
+        'message_seen' => 'N',
+        'user_id' => $request->input('user_id')
+      ]);
+
+      return ['status' => 'Message Sent!'];
+    }
+
     $user = Auth::user();
 
     $message = $user->messages()->create([
       'message' => $request->input('message'),
-      'r_user_id' => $request->input('r_user_id')
+      'r_user_id' => $request->input('r_user_id'),
+      'message_seen' => 'N'
     ]);
 
     broadcast(new MessageSent($user, $message))->toOthers();

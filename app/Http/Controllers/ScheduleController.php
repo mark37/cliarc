@@ -46,6 +46,7 @@ class ScheduleController extends Controller
 
       Schedule::create([
         'schedule_name' => $request->input('schedule_name'),
+        'schedule_desc' => $request->input('schedule_desc'),
         'schedule_start_date' => Carbon::parse($request->input('schedule_start_date')),
         'schedule_end_date' => Carbon::parse($request->input('schedule_end_date')),
         'schedule_venue' => $request->input('schedule_venue')
@@ -89,6 +90,7 @@ class ScheduleController extends Controller
       
       $schedule = Schedule::findOrFail($request->input('schedule_id'));
         $schedule->schedule_name = $request->input('schedule_name');
+        $schedule->schedule_desc = $request->input('schedule_desc');
         $schedule->schedule_start_date = Carbon::parse($request->input('schedule_start_date'));
         $schedule->schedule_end_date = Carbon::parse($request->input('schedule_end_date'));
         $schedule->schedule_venue = $request->input('schedule_venue');

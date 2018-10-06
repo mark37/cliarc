@@ -30419,7 +30419,8 @@ var app = new Vue({
     messages: [],
     message_list: [],
     r_user_id: [],
-    fiter: []
+    fiter: [],
+    currentDate: new Date()
   },
 
   created: function created() {
@@ -30473,14 +30474,39 @@ var app = new Vue({
       });
     },
     addMessage: function addMessage(message) {
+      var _this5 = this;
+
+      console.log(message);
       this.messages.push(message);
 
       axios.post('/messages', message).then(function (response) {
+        if (_this5.currentDate.getDay() == 0 || _this5.currentDate.getDay() == 6 || _this5.currentDate.getHours() < 8 || _this5.currentDate.getHours() > 17) {
+
+          var message_notif = "Thank you for sending us a message, but our office is closed as of this moment. CLIARCLDs office hours is from Mon-Fri at 8:00 AM-5:00 PM. Thank you!";
+          _this5.messages.push({
+            message: message_notif,
+            user: { 'id': message.r_user_id },
+            r_user_id: message.user.id,
+            created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
+          });
+
+          var bot_message = {
+            message: message_notif,
+            user_id: message.r_user_id,
+            r_user_id: message.user.id,
+            created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss'),
+            auto_reply: 'Y'
+          };
+
+          axios.post('/messages', bot_message).then(function (response) {
+            console.log(response.data);
+          });
+        }
         console.log(response.data);
       });
     },
     uploadFile: function uploadFile(data) {
-      var _this5 = this;
+      var _this6 = this;
 
       console.log(data);
 
@@ -30508,7 +30534,7 @@ var app = new Vue({
             created_at: __WEBPACK_IMPORTED_MODULE_0_moment___default()().format('YYYY-MM-DD hh:mm:ss')
           });
           console.log('success');
-        }.bind(_this5)).catch(function (data) {
+        }.bind(_this6)).catch(function (data) {
           console.log(data);
         });
       };
@@ -74503,36 +74529,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -74559,8 +74555,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.newMessage = '';
     },
     uploadFiles: function uploadFiles() {
-      console.log(this.user);
-      console.log(this.r_user_id);
       this.$emit('addfile', {
         user: this.user,
         files: this.files,

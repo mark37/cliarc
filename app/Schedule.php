@@ -12,6 +12,7 @@ class Schedule extends Model
 
   protected $fillable = [
       'schedule_name',
+      'schedule_desc',
       'schedule_start_date',
       'schedule_end_date',
       'schedule_venue'

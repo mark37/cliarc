@@ -393,6 +393,7 @@ img{ max-width:100%;}
         var button = $(event.relatedTarget) 
         var scheduleid = button.data('scheduleid') 
         var schedulename = button.data('schedulename') 
+        var scheduledesc = button.data('scheduledesc') 
         var schedulesdate = button.data('schedulesdate') 
         var scheduleedate = button.data('scheduleedate') 
         var schedulevenue = button.data('schedulevenue') 
@@ -400,6 +401,7 @@ img{ max-width:100%;}
         
         modal.find('.modal-body #schedule_id').val(scheduleid);
         modal.find('.modal-body #schedule_name').val(schedulename);
+        modal.find('.modal-body #schedule_desc').val(scheduledesc);
         modal.find('.modal-body #schedule_start_date').val(schedulesdate);
         modal.find('.modal-body #schedule_end_date').val(scheduleedate);
         modal.find('.modal-body #schedule_venue').val(schedulevenue);
