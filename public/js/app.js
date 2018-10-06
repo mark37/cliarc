@@ -30499,6 +30499,7 @@ var app = new Vue({
           };
 
           axios.post('/messages', bot_message).then(function (response) {
+
             console.log(response.data);
           });
         }

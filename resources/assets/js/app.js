@@ -106,6 +106,7 @@ const app = new Vue({
             }
 
             axios.post('/messages', bot_message).then(response => {
+              
               console.log(response.data);
             });  
           }
