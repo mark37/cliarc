@@ -235,7 +235,7 @@
                         <div class="form-group col">
                           @foreach ($item_types as $item_type)
                             <div class="radio">
-                              <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}">{{ $item_type->type_desc }}</label>
+                              <label><input type="radio" name="product_type" value="{{ $item_type->type_id }}" {{ $item_type->type_id == app('request')->input('product_type') ? 'checked' : ''}}>{{ $item_type->type_desc }}</label>
                             </div>
                           @endforeach
                         </div>

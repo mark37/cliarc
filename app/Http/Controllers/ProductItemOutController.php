@@ -111,7 +111,7 @@ class ProductItemOutController extends Controller
       if($check_rq->request_status_id != $request->input('request_status_id')){
         switch ($request->input('request_status_id')){
           case 'AP':
-            $message = "Your request of '$check_rq->product_name'  has been approved!";
+            $message = "Your request of '$check_rq->product_name'  has been approved! Please proceed to CLIARC office and bring one valid ID. Thank you!";
             break;
           case 'AQ':
             $message = "";
