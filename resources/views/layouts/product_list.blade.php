@@ -72,6 +72,14 @@
                         </div>
 
                         <div class="form-group row">
+                          <label for="qty" class="col-md-4 col-form-label text-md-right">{{ __('Quantity') }}</label>
+                    
+                          <div class="col-md-6">
+                            <input id="qty" type="text" class="form-control{{ $errors->has('qty') ? ' is-invalid' : '' }}" name="qty">
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
                           <label for="request_notes" class="col-md-4 col-form-label text-md-right">{{ __('Notes') }}</label>
 
                           <div class="col-md-6">

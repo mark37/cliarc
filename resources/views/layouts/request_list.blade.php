@@ -14,9 +14,11 @@
             <thead class="thead-light">
               <tr>
                 <th>Requested by</th>
+                <th>Contact Number</th>
                 <th>Product Requested</th>
                 <th>Request Date</th>
                 <th>Request Notes</th>
+                <th>Request Qty</th>
                 <th>Request Status</th>
                 <th>Return ETA</th>
                 <th>Action</th>
@@ -24,37 +26,65 @@
             </thead>
             <tbody>
               @foreach ($requests as $request)
-              <tr>
-                <td>{{ $request->name }}</td>
-                <td>{{ $request->product_name }}</td>
-                <td>{{ $request->request_date }}</td>
-                <td>{{ $request->request_notes }}</td>
-                <td>{{ $request->request_status_desc }}</td>
-                <td>{{ $request->date_returned }}</td>
-                <td>
+                @if($request->request_status_id == 'EQ' ||$request->request_status_id == 'MC')
+                  <tr>
+                    <td>{{ $request->name }}</td>
+                    <td>{{ $request->contact_number }}</td>
+                    <td>{{ $request->product_name }}</td>
+                    <td>{{ $request->request_date }}</td>
+                    <td>{{ $request->request_notes }}</td>
+                    <td>{{ $request->qty }}</td>
+                    <td>{{ $request->request_status_desc }}</td>
+                    <td>{{ $request->date_returned }}</td>
+                    <td>
+                      @if($request->request_status_id == 'RQ')
+                        <button class="btn btn-primary"
+                          data-requestid = "{{ $request->request_id}}"
+                          data-productname="{{ $request->product_name }}"
+                          data-requestdate="{{ $request->request_date }}"
+                          data-requestnotes="{{ $request->request_notes }}"
+                          data-requestedby="{{ $request->name }}"
+                          data-toggle="modal" data-target="#processRequestModal">
+                          Process Request
+                        </button>
+                      @else
+                        <button class="btn btn-primary"
+                          data-requestid = "{{ $request->request_id}}"
+                          data-productname="{{ $request->product_name }}"
+                          data-requestdate="{{ $request->request_date }}"
+                          data-requestnotes="{{ $request->request_notes }}"
+                          data-requestedby="{{ $request->name }}"
+                          data-toggle="modal" data-target="#processRequestModal">
+                          Return Item
+                        </button>
+                      @endif
+                    </td>
+                  </tr>
+                @else
                   @if($request->request_status_id == 'RQ')
-                    <button class="btn btn-primary"
-                      data-requestid = "{{ $request->request_id}}"
-                      data-productname="{{ $request->product_name }}"
-                      data-requestdate="{{ $request->request_date }}"
-                      data-requestnotes="{{ $request->request_notes }}"
-                      data-requestedby="{{ $request->name }}"
-                      data-toggle="modal" data-target="#processRequestModal">
-                      Process Request
-                    </button>
-                  @else
-                    <button class="btn btn-primary"
-                      data-requestid = "{{ $request->request_id}}"
-                      data-productname="{{ $request->product_name }}"
-                      data-requestdate="{{ $request->request_date }}"
-                      data-requestnotes="{{ $request->request_notes }}"
-                      data-requestedby="{{ $request->name }}"
-                      data-toggle="modal" data-target="#processRequestModal">
-                      Return Item
-                    </button>
+                    <tr>
+                      <td>{{ $request->name }}</td>
+                      <td>{{ $request->contact_number }}</td>
+                      <td>{{ $request->product_name }}</td>
+                      <td>{{ $request->request_date }}</td>
+                      <td>{{ $request->request_notes }}</td>
+                      <td>{{ $request->qty }}</td>
+                      <td>{{ $request->request_status_desc }}</td>
+                      <td>{{ $request->date_returned }}</td>
+                      <td>
+                        <button class="btn btn-primary"
+                          data-requestid = "{{ $request->request_id}}"
+                          data-productname="{{ $request->product_name }}"
+                          data-requestdate="{{ $request->request_date }}"
+                          data-requestnotes="{{ $request->request_notes }}"
+                          data-requestedby="{{ $request->name }}"
+                          data-toggle="modal" data-target="#processRequestModal">
+                          Process Request
+                        </button>
+                      </td>
+                    </tr>
                   @endif
-                </td>
-              </tr>
+                @endif
               @endforeach
             </tbody>
           </table>

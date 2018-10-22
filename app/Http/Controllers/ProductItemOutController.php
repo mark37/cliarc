@@ -26,7 +26,8 @@ class ProductItemOutController extends Controller
                   'product_item_out.approved_date as approved_date', 'product_item_out.product_eta as product_eta',
                   'product_item_out.product_return_date as product_return_date', 'lib_return_status.return_status_desc as return_status_desc',
                   'product_item_out.remarks as remarks', 'product_item_out.request_notes as request_notes',
-                  'lib_request_status.request_status_desc as request_status_desc')
+                  'lib_request_status.request_status_desc as request_status_desc', 'product_item_out.qty as qty',
+                  'product_list.product_type as product_type', 'users.contact_number as contact_number')
                   ->leftJoin('lib_request_status','lib_request_status.request_status_id','=','product_item_out.request_status_id')
                   ->leftJoin('lib_return_status','lib_return_status.return_status_id','=','product_item_out.return_status_id')
                   ->join('users','users.id','=','product_item_out.user_id')
@@ -62,6 +63,7 @@ class ProductItemOutController extends Controller
         'product_item_id' => $request->input('product_item_id'),
         'request_date' => Carbon::now(),
         'request_notes' => $request->input('request_notes'),
+        'qty' => $request->input('qty'),
         'user_id' => $request->input('user_id'),
         'request_status_id' => 'RQ'
       ]);

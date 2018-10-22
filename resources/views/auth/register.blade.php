@@ -88,6 +88,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="contact_number" class="col-md-4 col-form-label text-md-right">{{ __('Contact Number') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="contact_number" type="text" class="form-control{{ $errors->has('contact_number') ? ' is-invalid' : '' }}" name="contact_number" required>
+
+                                @if ($errors->has('contact_number'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('contact_number') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="account_type" class="col-md-4 col-form-label text-md-right">{{ __('Account Type') }}</label>
 
                             <div class="form-group col">

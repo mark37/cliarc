@@ -13,6 +13,7 @@ class ProductItemOut extends Model
     'request_date',
     'request_notes',
     'request_status_id',
+    'qty',
     'user_id',
     'approved_by',
     'approved_date',

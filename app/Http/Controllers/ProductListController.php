@@ -61,7 +61,13 @@ class ProductListController extends Controller
                         ->get();
 
         if($check_status->count() > 0){
-          $value['request_status_id'] = 'NOT AVAILABLE';
+          if($check_status->product_type == 'SD' || $check_status->product_type == 'BP' |
+            $check_status->product_type == 'MS' || $check_status->product_type == 'CK' ||
+            $check_status->product_type == 'JM'){
+            $value['request_status_id'] = 'AVAILABLE';
+          } else {
+            $value['request_status_id'] = 'NOT AVAILABLE';
+          }
         }else{
           $value['request_status_id'] = 'AVAILABLE';
         }
