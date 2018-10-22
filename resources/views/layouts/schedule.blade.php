@@ -5,10 +5,12 @@
     <div class="row justify-content-center">
       <div class="card"  style="margin: 25px 0">
         <div class="card-header"><span>{{ __('List of Schedule') }}</span>
-          @if(Auth::user()->is_admin == 'Y')
-          <span>
-            <button class="btn btn-primary float-right" type="button" data-toggle="modal" data-target="#addSchedModal">Add+</button>
-          </span>
+          @if(Auth::user())
+            @if(Auth::user()->is_admin == 'Y')
+            <span>
+              <button class="btn btn-primary float-right" type="button" data-toggle="modal" data-target="#addSchedModal">Add+</button>
+            </span>
+            @endif
           @endif
         </div>
           <table style="table-layout: fixed; word-wrap: break-word;" class="table table-hover ">
@@ -19,10 +21,11 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Venue</th>
-                @if(Auth::user()->is_admin == 'Y')
-                  <th>Action</th>
+                @if(Auth::user())
+                  @if(Auth::user()->is_admin == 'Y')
+                    <th>Action</th>
+                  @endif
                 @endif
-                
               </tr>
             </thead>
             <tbody>
@@ -33,29 +36,32 @@
                 <td>{{ $schedule->schedule_start_date }}</td>
                 <td>{{ $schedule->schedule_end_date }}</td>
                 <td>{{ $schedule->schedule_venue }}</td>
-                <td width='30%'>
+                @if(Auth::user())
                   @if(Auth::user()->is_admin == 'Y')
-                  <div class="btn-group" data-toggle="button">
-                    <button class="btn btn-primary"
-                      data-scheduleid="{{ $schedule->schedule_id }}"
-                      data-schedulename="{{ $schedule->schedule_name }}" 
-                      data-scheduledesc="{{ $schedule->schedule_desc }}" 
-                      data-schedulesdate="{{ $schedule->schedule_start_date }}" 
-                      data-scheduleedate="{{ $schedule->schedule_end_date }}" 
-                      data-schedulevenue="{{ $schedule->schedule_venue }}" 
-                      data-toggle="modal" data-target="#editSched">
-                      Edit
-                    </button>
+                    <td width='30%'>
+                      
+                      <div class="btn-group" data-toggle="button">
+                        <button class="btn btn-primary"
+                          data-scheduleid="{{ $schedule->schedule_id }}"
+                          data-schedulename="{{ $schedule->schedule_name }}" 
+                          data-scheduledesc="{{ $schedule->schedule_desc }}" 
+                          data-schedulesdate="{{ $schedule->schedule_start_date }}" 
+                          data-scheduleedate="{{ $schedule->schedule_end_date }}" 
+                          data-schedulevenue="{{ $schedule->schedule_venue }}" 
+                          data-toggle="modal" data-target="#editSched">
+                          Edit
+                        </button>
 
-                    <button class="btn btn-danger"
-                      data-scheduleid="{{ $schedule->schedule_id }}"
-                      data-schedulename="{{ $schedule->schedule_name }}" 
-                      data-toggle="modal" data-target="#deleteSched">
-                      Delete
-                    </button>
-                  </div>
+                        <button class="btn btn-danger"
+                          data-scheduleid="{{ $schedule->schedule_id }}"
+                          data-schedulename="{{ $schedule->schedule_name }}" 
+                          data-toggle="modal" data-target="#deleteSched">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
                   @endif
-                </td>
+                @endif
               </tr>
               @endforeach
             </tbody>

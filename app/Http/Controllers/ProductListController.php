@@ -20,10 +20,10 @@ class ProductListController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    /* public function __construct()
     {
         $this->middleware('auth');
-    }
+    } */
 
     /**
      * Display a listing of the resource.
@@ -41,6 +41,13 @@ class ProductListController extends Controller
 
         if($request->input('product_type') =='EQ'){
           $products = $products->orWhere('product_type', 'LIKE', 'MC');
+        }
+
+        if($request->input('product_type') =='SD'){
+          $products = $products->orWhere('product_type', 'LIKE', 'BP');
+          $products = $products->orWhere('product_type', 'LIKE', 'MS');
+          $products = $products->orWhere('product_type', 'LIKE', 'CK');
+          $products = $products->orWhere('product_type', 'LIKE', 'JM');
         }
       }
 
