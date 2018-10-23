@@ -4,7 +4,7 @@
   <div class="container">
     <div class="column justify-content-center">
       <div class="card"  style="margin: 25px 0" >
-        <form method="GET" class="form-inline" action="{{ url('/reports/'.'test') }}" aria-label="{{ __('reports') }}">
+        <form method="GET" class="form-inline" action="{{ url('/reports-request/'.'test') }}" aria-label="{{ __('reports') }}">
           <div class="form-group column">
             <label for="start_date" class="col-md-4 col-form-label text-md-right">{{ __('Start Date (mm/dd/yyyy)') }}</label>
 
@@ -51,18 +51,26 @@
           <table style="table-layout: fixed; word-wrap: break-word;" class="table table-hover ">
             <thead class="thead-light">
               <tr>
-                <th>File</th>
-                <th>Uploaded By</th>
-                <th>Date Uploaded</th>
+                <th>Requested by</th>
+                <th>Contact Number</th>
+                <th>Product Requested</th>
+                <th>Request Date</th>
+                <th>Request Notes</th>
+                <th>Request Qty</th>
+                <th>Request Status</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($reports as $report)
-              <tr>
-                <td> <a href="{{ url('files/'.$report->path.'/'.$report->filename) }}">{{ $report->filename }}</a></td>
-                <td>{{ $report->name }}, {{ $report->first_name }}</td>
-                <td>{{ $report->created_at }}</td>
-              </tr>
+                <tr>
+                  <td>{{ $report->name }}</td>
+                  <td>{{ $report->contact_number }}</td>
+                  <td>{{ $report->product_name }}</td>
+                  <td>{{ $report->request_date }}</td>
+                  <td>{{ $report->request_notes }}</td>
+                  <td>{{ $report->qty }}</td>
+                  <td>{{ $report->request_status_desc }}</td>
+                </tr>
               @endforeach
             </tbody>
           </table>

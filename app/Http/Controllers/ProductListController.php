@@ -54,13 +54,16 @@ class ProductListController extends Controller
       $products = $products->get();
 
       foreach($products as $key => $value){
-        $check_status = ProductItemOut::where('product_item_id','=',$value->id)
+        $check_status = ProductItemOut::join('product_list','product_list.id','=','product_item_out.product_item_id')
+                        ->where('product_item_id','=',$value->id)
                         ->where('request_status_id','!=','RQ')
                         ->whereNotNull('approved_date')
                         ->whereNull('product_return_date')
-                        ->get();
+                        ->first();
 
         if($check_status->count() > 0){
+          // dd($check_status[0]);
+          // dd($check_status->product_type);
           if($check_status->product_type == 'SD' || $check_status->product_type == 'BP' |
             $check_status->product_type == 'MS' || $check_status->product_type == 'CK' ||
             $check_status->product_type == 'JM'){

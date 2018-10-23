@@ -323,7 +323,7 @@
 
                     @if(Auth::user()->account_type != 'CL')
                       <li><a class="dropdown-item" href="{{ url('/product_item_out') }}">Requests</a></li>
-                      <li><a class="dropdown-item" href="{{ url('/files_submitted') }}">File Submitted</a></li>
+                      <li><a class="dropdown-item" href="{{ url('/reports') }}">File Submitted</a></li>
                     @endif
                     <li>
                       <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
