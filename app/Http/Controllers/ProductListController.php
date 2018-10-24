@@ -61,7 +61,7 @@ class ProductListController extends Controller
                         ->whereNull('product_return_date')
                         ->first();
 
-        if($check_status->count() > 0){
+        if($check_status){
           // dd($check_status[0]);
           // dd($check_status->product_type);
           if($check_status->product_type == 'SD' || $check_status->product_type == 'BP' |
