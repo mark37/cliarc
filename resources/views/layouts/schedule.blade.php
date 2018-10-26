@@ -19,7 +19,9 @@
                 <th>Name</th>
                 <th>Details</th>
                 <th>Start Date</th>
+                <th>Time</th>
                 <th>End Date</th>
+                <th>Time</th>
                 <th>Venue</th>
                 @if(Auth::user())
                   @if(Auth::user()->is_admin == 'Y')
@@ -34,7 +36,9 @@
                 <td>{{ $schedule->schedule_name }}</td>
                 <td>{{ $schedule->schedule_desc }}</td>
                 <td>{{ $schedule->schedule_start_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($schedule->schedule_start_time)->format('h:i A') }}</td>
                 <td>{{ $schedule->schedule_end_date }}</td>
+                <td>{{ \Carbon\Carbon::parse($schedule->schedule_end_time)->format('h:i A') }}</td>
                 <td>{{ $schedule->schedule_venue }}</td>
                 @if(Auth::user())
                   @if(Auth::user()->is_admin == 'Y')
@@ -46,7 +50,9 @@
                           data-schedulename="{{ $schedule->schedule_name }}" 
                           data-scheduledesc="{{ $schedule->schedule_desc }}" 
                           data-schedulesdate="{{ $schedule->schedule_start_date }}" 
+                          data-schedulestime="{{ $schedule->schedule_start_time }}" 
                           data-scheduleedate="{{ $schedule->schedule_end_date }}" 
+                          data-scheduleetime="{{ $schedule->schedule_end_time }}" 
                           data-schedulevenue="{{ $schedule->schedule_venue }}" 
                           data-toggle="modal" data-target="#editSched">
                           Edit
@@ -125,10 +131,10 @@
 
 
                       <div class="form-group row">
-                        <label for="schedule_start_date" class="col-md-4 col-form-label text-md-right">{{ __('Start Date (mm/dd/yyyy)') }}</label>
+                        <label for="schedule_start_date" class="col-md-4 col-form-label text-md-right">{{ __('Start Date') }}</label>
 
                         <div class="col-md-6">
-                          <input id="schedule_start_date" type="text" class="form-control{{ $errors->has('schedule_start_date') ? ' is-invalid' : '' }}" name="schedule_start_date" required>
+                          <input id="schedule_start_date" type="date" class="form-control{{ $errors->has('schedule_start_date') ? ' is-invalid' : '' }}" name="schedule_start_date" required>
 
                           @if ($errors->has('schedule_start_date'))
                             <span class="invalid-feedback" role="alert">
@@ -139,14 +145,42 @@
                       </div>
 
                       <div class="form-group row">
-                        <label for="schedule_end_date" class="col-md-4 col-form-label text-md-right">{{ __('End Date (mm/dd/yyyy)') }}</label>
+                        <label for="schedule_start_time" class="col-md-4 col-form-label text-md-right">{{ __('Start Time') }}</label>
 
                         <div class="col-md-6">
-                          <input id="schedule_end_date" type="text" class="form-control{{ $errors->has('schedule_end_date') ? ' is-invalid' : '' }}" name="schedule_end_date" required>
+                          <input id="schedule_start_time" type="time" class="form-control{{ $errors->has('schedule_start_time') ? ' is-invalid' : '' }}" name="schedule_start_time" required>
+
+                          @if ($errors->has('schedule_start_time'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('schedule_start_time') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="schedule_end_date" class="col-md-4 col-form-label text-md-right">{{ __('End Date') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="schedule_end_date" type="date" class="form-control{{ $errors->has('schedule_end_date') ? ' is-invalid' : '' }}" name="schedule_end_date" required>
 
                           @if ($errors->has('schedule_end_date'))
                             <span class="invalid-feedback" role="alert">
                               <strong>{{ $errors->first('schedule_end_date') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="schedule_end_time" class="col-md-4 col-form-label text-md-right">{{ __('End Time') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="schedule_end_time" type="time" class="form-control{{ $errors->has('schedule_end_time') ? ' is-invalid' : '' }}" name="schedule_end_time" required>
+
+                          @if ($errors->has('schedule_end_time'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('schedule_end_time') }}</strong>
                             </span>
                           @endif
                         </div>
@@ -237,6 +271,20 @@
                       </div>
 
                       <div class="form-group row">
+                        <label for="schedule_start_time" class="col-md-4 col-form-label text-md-right">{{ __('Start Time') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="schedule_start_time" type="time" class="form-control{{ $errors->has('schedule_start_time') ? ' is-invalid' : '' }}" name="schedule_start_time" required>
+
+                          @if ($errors->has('schedule_start_time'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('schedule_start_time') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
                         <label for="schedule_end_date" class="col-md-4 col-form-label text-md-right">{{ __('End Date (mm/dd/yyyy)') }}</label>
 
                         <div class="col-md-6">
@@ -245,6 +293,20 @@
                           @if ($errors->has('schedule_end_date'))
                             <span class="invalid-feedback" role="alert">
                               <strong>{{ $errors->first('schedule_end_date') }}</strong>
+                            </span>
+                          @endif
+                        </div>
+                      </div>
+
+                      <div class="form-group row">
+                        <label for="schedule_end_time" class="col-md-4 col-form-label text-md-right">{{ __('End Time') }}</label>
+
+                        <div class="col-md-6">
+                          <input id="schedule_end_time" type="time" class="form-control{{ $errors->has('schedule_end_time') ? ' is-invalid' : '' }}" name="schedule_end_time" required>
+
+                          @if ($errors->has('schedule_end_time'))
+                            <span class="invalid-feedback" role="alert">
+                              <strong>{{ $errors->first('schedule_end_time') }}</strong>
                             </span>
                           @endif
                         </div>

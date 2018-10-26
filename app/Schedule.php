@@ -14,7 +14,9 @@ class Schedule extends Model
       'schedule_name',
       'schedule_desc',
       'schedule_start_date',
+      'schedule_start_time',
       'schedule_end_date',
+      'schedule_end_time',
       'schedule_venue'
   ];
 }

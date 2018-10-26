@@ -6,10 +6,10 @@
       <div class="card"  style="margin: 25px 0" >
         <form method="GET" class="form-inline" action="{{ url('/reports/'.'test') }}" aria-label="{{ __('reports') }}">
           <div class="form-group column">
-            <label for="start_date" class="col-md-4 col-form-label text-md-right">{{ __('Start Date (mm/dd/yyyy)') }}</label>
+            <label for="start_date" class="col-md-4 col-form-label text-md-right">{{ __('Start Date') }}</label>
 
             <div class="col-md-6">
-              <input id="start_date" type="text" class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" name="start_date" value="{{ old('start_date') }}" required autofocus>
+              <input id="start_date" type="date" class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" name="start_date" value="{{ old('start_date') }}" required autofocus>
 
               @if ($errors->has('start_date'))
                 <span class="invalid-feedback" role="alert">
@@ -20,10 +20,10 @@
           </div>
 
           <div class="form-group column">
-            <label for="end_date" class="col-md-4 col-form-label text-md-right">{{ __('End Date (mm/dd/yyyy)') }}</label>
+            <label for="end_date" class="col-md-4 col-form-label text-md-right">{{ __('End Date') }}</label>
 
             <div class="col-md-6">
-              <input id="end_date" type="text" class="form-control{{ $errors->has('end_date') ? ' is-invalid' : '' }}" name="end_date" value="{{ old('end_date') }}" required autofocus>
+              <input id="end_date" type="date" class="form-control{{ $errors->has('end_date') ? ' is-invalid' : '' }}" name="end_date" value="{{ old('end_date') }}" required autofocus>
 
               @if ($errors->has('end_date'))
                 <span class="invalid-feedback" role="alert">

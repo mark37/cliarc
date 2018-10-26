@@ -428,7 +428,9 @@
         var schedulename = button.data('schedulename') 
         var scheduledesc = button.data('scheduledesc') 
         var schedulesdate = button.data('schedulesdate') 
+        var schedulestime = button.data('schedulestime') 
         var scheduleedate = button.data('scheduleedate') 
+        var scheduleetime = button.data('scheduleetime') 
         var schedulevenue = button.data('schedulevenue') 
         var modal = $(this)
         
@@ -436,7 +438,9 @@
         modal.find('.modal-body #schedule_name').val(schedulename);
         modal.find('.modal-body #schedule_desc').val(scheduledesc);
         modal.find('.modal-body #schedule_start_date').val(schedulesdate);
+        modal.find('.modal-body #schedule_start_time').val(schedulestime);
         modal.find('.modal-body #schedule_end_date').val(scheduleedate);
+        modal.find('.modal-body #schedule_end_time').val(scheduleetime);
         modal.find('.modal-body #schedule_venue').val(schedulevenue);
     });
 

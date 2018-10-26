@@ -9,10 +9,25 @@
             <div class="about-title clearfix">
               <h1>About <span>CLIARCLD</span></h1>
               <h3>History</h3>
-              <p class="about-paddingB">In 1933, the Philippines is under the Commonwealth government headed by Pres.
-              Manuel Luis Quezon is a country to be developed. Since the country’s main livelihood 
-              is agriculture, the government has focused mainly on agricultural programs such as 
-              the upliftment of animal production in the country.</p>
+              <p class="about-paddingB">In 1933, the Philippines is under the Commonwealth government headed by Pres. Manuel Luis Quezon 
+              is a country to be developed. Since the country’s main livelihood is agriculture, the government has focused mainly on 
+              agricultural programs such as the upliftment of animal production in the country. With these program then, the 
+              Department of Agriculture and Natural Resources has promoted a program of establishing a breeding station to each provinces 
+              to serve the community in upgrading local breeds of animals so as to have higher output on the carcass. So as the program was implemented, 
+              Tarlac has been fortunately lucky enough to be one of the pioneer in receiving the graces of the program. So in 1983 the Tarlac Breeding Station 
+              was established leasing to the DANR from a portion of the area of Camp Aquino now called Camp Servillano Aquino located at San Miguel, 
+              Tarlac. Tarlac as its own location, as its initial stocks the government has imported breeding animals such as swine, goats, cattle, and 
+              horses readily for use to those who want to avail in upgrading the breed of backyard animal raisers. In 1964 the leased area to the BAI 
+              by the AFP has been released from the AFP’s given solely for use of the DANR (BAI) which is covered under the Proclamation Order No. 255 
+              dated June 3, 1964 which was signed by then, President Diosdado Macapagal. <br /><br />
+              
+              As years passed by, the station has served the whole province inspite of problem undermaned. As understaffed compared with the volume of work it 
+              is handling, problem has properly endorsed to authorities and was also solved by deciding to established additional breeding centers to the different 
+              towns in the province. The DANR thru the representation of men to local officials in the municipalities and civic spirited people at Camiling has 
+              agreed to have a breeding center thereat, and so in 1956 the Camiling Breeding Center was opened
+              </p>
+
+              <br />
             
               <h3>Main function</h3>
               <p class="about-paddingB">1. Conduct adaptation and verification trials of technologies developed by National R&D Centers for appropriate fine-tuning and dissemination.</p>
