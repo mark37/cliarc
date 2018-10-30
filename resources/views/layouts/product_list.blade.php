@@ -61,7 +61,13 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="requestModals">Request Product</h5>
+                        @if(app('request')->input('product_type') == 'SD')
+                          <h5 class="modal-title" id="requestModals">Request Product</h5>
+                        @else
+                          <h5 class="modal-title" id="requestModals">Request Equipment</h5>
+                        @endif
+
+                        
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -110,7 +116,12 @@
       <div class="row justify-content-center">
         <div class="card"  style="margin: 25px 0">
         
-          <div class="card-header"><span>{{ __('Item Masterlist') }}</span>
+          @if(app('request')->input('product_type') == 'SD')
+            <div class="card-header"><span>{{ __('Product Masterlist') }}</span>
+          @else
+            <div class="card-header"><span>{{ __('Equipment Masterlist') }}</span>
+          @endif
+
             @if(Auth::user()->is_admin == 'Y')
             <span>
               <button class="btn btn-primary float-right" type="button" data-toggle="modal" data-target="#addItemModal">Add+</button>
