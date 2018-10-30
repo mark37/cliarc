@@ -184,14 +184,18 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="addItemModal">Add Product</h5>
+                        @if(app('request')->input('product_type') == 'SD')
+                          <h5 class="modal-title" id="addItemModal">Add Product</h5>
+                        @else
+                          <h5 class="modal-title" id="addItemModal">Add Equipment</h5>
+                        @endif
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
                       <div class="modal-body">
                         <div class="form-group row">
-                          <label for="product_name" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
+                          <label for="product_name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                           <div class="col-md-6">
                             <input id="product_name" type="text" class="form-control{{ $errors->has('product_name') ? ' is-invalid' : '' }}" name="product_name" required>
@@ -206,7 +210,7 @@
 
                         <!-- IMAGE -->
                         <div class="form-group row">
-                          <label for="product_image" class="col-md-4 col-form-label text-md-right">{{ __('Product Name') }}</label>
+                          <label for="product_image" class="col-md-4 col-form-label text-md-right">{{ __('Upload Image') }}</label>
 
                           <div class="col-md-6">
                             <input id="product_image" type="file" class="form-control{{ $errors->has('product_image') ? ' is-invalid' : '' }}" name="product_image" required>
@@ -246,8 +250,12 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
-
+                          @if(app('request')->input('product_type') == 'SD')
+                            <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
+                          @else
+                            <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Brandname') }}</label>
+                          @endif
+                          
                           <div class="col-md-6">
                             <input id="product_unit" type="text" class="form-control{{ $errors->has('product_unit') ? ' is-invalid' : '' }}" name="product_unit" required>
 
@@ -291,7 +299,11 @@
                     <div class="modal-content">
                   
                       <div class="modal-header">
-                        <h5 class="modal-title" id="editModals">Edit Product</h5>
+                        @if(app('request')->input('product_type') == 'SD')
+                          <h5 class="modal-title" id="editModals">Edit Product</h5>
+                        @else
+                          <h5 class="modal-title" id="editModals">Edit Equipment</h5>
+                        @endif
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -355,7 +367,12 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
+                          @if(app('request')->input('product_type') == 'SD')
+                            <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Price') }}</label>
+                          @else
+                            <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Brandname') }}</label>
+                          @endif
+                          
 
                           <div class="col-md-6">
                             <input id="product_unit" type="text" class="form-control{{ $errors->has('product_unit') ? ' is-invalid' : '' }}" name="product_unit" required>
@@ -398,7 +415,13 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="deleteModals">Delete Product</h5>
+                      @if(app('request')->input('product_type') == 'SD')
+                        <h5 class="modal-title" id="deleteModals">Delete Product</h5>
+                      @else
+                        <h5 class="modal-title" id="deleteModals">Delete Equipment</h5>
+                      @endif
+
+                      <!-- <h5 class="modal-title" id="deleteModals">Delete Product</h5> -->
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
