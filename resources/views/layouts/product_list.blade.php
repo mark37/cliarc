@@ -34,7 +34,11 @@
                 <div class="card-body">
                   <h4 class="card-title">{{ $product->product_name }}</h4>
                   <p class="card-text">{{ $product->product_desc }}</p>
-                <p class="card-text">Price: {{ $product->product_unit }}</p>
+                  @if(app('request')->input('product_type') == 'SD')
+                    <p class="card-text">Price: {{ $product->product_unit }}</p>
+                  @else
+                    <p class="card-text">Brandname: {{ $product->product_unit }}</p>
+                  @endif
                   <p class="card-text">Status: {{ $product->request_status_id }}</p>
                 </div>
                 <div class="card-footer" >
@@ -255,7 +259,7 @@
                           @else
                             <label for="product_unit" class="col-md-4 col-form-label text-md-right">{{ __('Brandname') }}</label>
                           @endif
-                          
+
                           <div class="col-md-6">
                             <input id="product_unit" type="text" class="form-control{{ $errors->has('product_unit') ? ' is-invalid' : '' }}" name="product_unit" required>
 
