@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterScheduleAddTime extends Migration
+class AlterMessageTableAddSeen extends Migration
 {
   /**
    * Run the migrations.
@@ -13,10 +13,10 @@ class AlterScheduleAddTime extends Migration
    */
   public function up()
   {
-    Schema::table('schedule', function($table)
+    Schema::table('messages', function($table)
     {
-      $table->time('schedule_start_time')->after('schedule_start_date');
-      $table->time('schedule_end_time')->after('schedule_end_date');
+      $table->char('seen_flag', 1)->after('size');
+      $table->dateTime('schedule_end_time')->after('seen_flag');
     });
   }
 
@@ -27,8 +27,8 @@ class AlterScheduleAddTime extends Migration
    */
   public function down()
   {
-    Schema::table('schedule', function (Blueprint $table) {
-      $table->dropColumn('schedule_start_time');
+    Schema::table('messages', function (Blueprint $table) {
+      $table->dropColumn('seen_flag');
       $table->dropColumn('schedule_end_time');
     });
   }

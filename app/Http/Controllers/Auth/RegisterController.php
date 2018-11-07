@@ -99,6 +99,7 @@ class RegisterController extends Controller
             'is_admin' => 'N',
             'id_number' => $request->input('id_number'),
             'contact_number' => $request->input('contact_number'),
+            'user_address' => $request->input('user_address'),
         ]);
 
         return view('layouts.registered');

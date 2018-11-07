@@ -102,6 +102,20 @@
                         </div>
 
                         <div class="form-group row">
+                            <label for="user_address" class="col-md-4 col-form-label text-md-right">{{ __('Contact Number') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="user_address" type="text" class="form-control{{ $errors->has('user_address') ? ' is-invalid' : '' }}" name="user_address" required>
+
+                                @if ($errors->has('user_address'))
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $errors->first('user_address') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
                             <label for="account_type" class="col-md-4 col-form-label text-md-right">{{ __('Account Type') }}</label>
 
                             <div class="form-group col">
