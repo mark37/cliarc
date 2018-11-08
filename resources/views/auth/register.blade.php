@@ -102,7 +102,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="user_address" class="col-md-4 col-form-label text-md-right">{{ __('Contact Number') }}</label>
+                            <label for="user_address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
 
                             <div class="col-md-6">
                                 <input id="user_address" type="text" class="form-control{{ $errors->has('user_address') ? ' is-invalid' : '' }}" name="user_address" required>
