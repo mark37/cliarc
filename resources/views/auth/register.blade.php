@@ -71,6 +71,9 @@
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    Your password must be more than 6 characters long, contain letters and numbers, and must not contain spaces.
+                                </small>
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('password') }}</strong>
