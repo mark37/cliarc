@@ -74,7 +74,7 @@ class RegisterController extends Controller
                 'name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
                 'first_name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6|confirmed',
+                'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/|confirmed',
                 'terms_of_service' => 'required',
                 'org_id' => 'string|max:2',
             ]);
@@ -83,12 +83,17 @@ class RegisterController extends Controller
                 'name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
                 'first_name' => 'required|string|regex:/^[A-Za-z\s-_]+$/|max:255',
                 'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6|confirmed',
+                'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/|confirmed',
                 'terms_of_service' => 'required',
                 'id_number' => 'required|string|max:10'
             ]);
         }
         
+       /*  $messages = [
+           (?=.*[\d\X])(?=.*[!$#%])
+            'password.regex'   => 'The :attribute number is invalid , accepted format: xxx-xxx-xxxx',
+        ]; */
+
         User::create([
             'name' => $request->input('name'),
             'first_name' => $request->input('first_name'),
