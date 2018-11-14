@@ -96,6 +96,10 @@
                             <div class="col-md-6">
                                 <input id="contact_number" type="text" class="form-control{{ $errors->has('contact_number') ? ' is-invalid' : '' }}" name="contact_number" required>
 
+                                <small id="passwordHelpBlock" class="form-text text-muted">
+                                    11 digit mobile number
+                                </small>
+
                                 @if ($errors->has('contact_number'))
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $errors->first('contact_number') }}</strong>
