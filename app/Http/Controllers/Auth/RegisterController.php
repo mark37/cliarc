@@ -87,7 +87,7 @@ class RegisterController extends Controller
                 'password' => 'required|string|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/|confirmed',
                 'terms_of_service' => 'required',
                 'contact_number' => 'string|min:11|regex:/^[0-9]+$/',
-                'id_number' => 'required|string|max:10'
+                'id_number' => 'required|string|max:10|regex:/^[0-9]+$/'
             ]);
         }
         
